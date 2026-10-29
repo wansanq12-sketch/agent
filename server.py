@@ -163,7 +163,7 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError('内容过长')
             data = json.loads(self.rfile.read(length) or '{}')
             if self.path == '/api/speech':
-                return self.reply(synthesize(data.get('text'), settings()))
+                return self.reply(synthesize(data.get('text'), settings(), {'enabled': data.get('preview') is True, 'consent': data.get('consent'), 'voice': data.get('voice'), 'rate': data.get('rate', 100)}))
             if self.path == '/api/game-watch':
                 action = data.get('action', 'status')
                 if action == 'configure':

@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import tempfile
 import threading
+from speech_service import VOICES
 
 FIELDS = {
     'proactive': dict(type='bool', default=False, group='proactive', label='开启主动关心'),
@@ -25,7 +26,8 @@ FIELDS = {
     'move_reminder_enabled': dict(type='bool', default=True, group='reminders', label='开启活动提醒'),
     'move_reminder_interval': dict(type='int', default=60, min=10, max=240, group='reminders', label='活动提醒间隔（分钟）'),
     'game_mode': dict(type='bool', default=False, group='gaming', label='开启游戏模式（高层置顶）'),
-    'voice_neural': dict(type='bool', default=True, group='voice', label='使用温柔自然女声 · 晓晓（联网）'),
+    'voice_neural': dict(type='bool', default=True, group='voice', label='使用在线自然女声（联网）'),
+    'voice_choice': dict(type='choice', default='zh-CN-XiaoxiaoNeural', choices=VOICES, group='voice', label='夜璃的声音'),
     'voice_online_consent': dict(type='bool', default=False, group='voice', label='允许将待朗读文字发送至微软在线语音服务'),
     'voice_normal_chat': dict(type='bool', default=False, group='voice', label='平时聊天也朗读回复'),
     'voice_rate': dict(type='int', default=100, min=60, max=160, group='voice', label='语音速度（100 为正常）'),
@@ -53,6 +55,9 @@ def validate(document):
         if spec['type'] == 'bool':
             if type(value) is not bool:
                 raise ValueError(spec['label'] + '必须是 true 或 false')
+        elif spec['type'] == 'choice':
+            if not isinstance(value, str) or value not in spec['choices']:
+                raise ValueError(spec['label'] + '请选择列表中的选项')
         elif type(value) is not int or not spec['min'] <= value <= spec['max']:
             raise ValueError(f"{spec['label']}需要是 {spec['min']}–{spec['max']} 之间的整数")
         result[key] = value

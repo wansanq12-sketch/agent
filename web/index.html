@@ -162,7 +162,7 @@ if(tab==='runtime'||tab==='wellbeing'||tab==='voice'){
  panel.append(el('small','这里配置夜璃自身的运行行为。保存后立即生效，不包含模型和外观参数。'));
  if(runtime.error||scheduleError){const warning=el('small',runtime.error||scheduleError);warning.className='error';panel.append(warning)}
  const fields={};let runtimeBusy=false;
- const read=()=>Object.fromEntries(Object.entries(fields).map(([key,input])=>[key,input.type==='checkbox'?input.checked:Number(input.value)]));
+ const read=()=>Object.fromEntries(Object.entries(fields).map(([key,input])=>[key,input.type==='checkbox'?input.checked:input.tagName==='SELECT'?input.value:Number(input.value)]));
  const perform=async(action,extra={})=>{
   if(runtimeBusy)return;runtimeBusy=true;error.textContent='处理中…';
   try{const result=await api('runtime',{action,...extra});await refresh();
@@ -177,8 +177,8 @@ if(tab==='runtime'||tab==='wellbeing'||tab==='voice'){
   panel.append(el('h3',label));
   for(const [key,spec]of Object.entries(runtime.fields)){
    if(spec.group!==group)continue;
-   const label=el('label',spec.label),input=el('input');label.htmlFor='runtime-'+key;input.id=label.htmlFor;input.type=spec.type==='bool'?'checkbox':'number';
-   if(input.type==='checkbox')input.checked=runtime.config[key];else{input.value=runtime.config[key];input.min=spec.min;input.max=spec.max;input.step=1}
+   const label=el('label',spec.label),input=el(spec.type==='choice'?'select':'input');label.htmlFor='runtime-'+key;input.id=label.htmlFor;if(spec.type==='choice'){for(const [value,name]of Object.entries(spec.choices)){const option=el('option',name);option.value=value;input.append(option)}input.value=runtime.config[key]}else input.type=spec.type==='bool'?'checkbox':'number';
+   if(spec.type==='choice'){}else if(input.type==='checkbox')input.checked=runtime.config[key];else{input.value=runtime.config[key];input.min=spec.min;input.max=spec.max;input.step=1}
    fields[key]=input;panel.append(label,input);
   }
   const reset=el('button','恢复'+label+'默认值');reset.onclick=()=>perform('reset',{group});panel.append(reset);
@@ -186,7 +186,18 @@ if(tab==='runtime'||tab==='wellbeing'||tab==='voice'){
  if(tab==='runtime')panel.append(el('small','无回应的重试至少间隔 2 小时，最多两次。安静时段开始与结束相同表示不设安静时段。延续计时会计入应用关闭期间的时间；用户再次互动后重置尝试次数。关闭记忆建议不会删除已有记忆。'));
  const validate=el('button','校验配置'),save=el('button',tab==='voice'?'保存声音设置':tab==='wellbeing'?'保存提醒设置':'保存运行配置'),reload=el('button','重新载入配置文件');
  validate.onclick=()=>perform('validate',{config:read()});save.onclick=()=>perform('apply',{config:read()});reload.onclick=()=>perform('reload');if(tab==='runtime')panel.append(validate,save,reload);else panel.append(save);
- if(tab==='voice'){const test=el('button','试听声音');test.onclick=()=>{if(typeof playVoice==='function')playVoice('哥哥，我在这里。接下来让我陪你一起玩吧。',true)};const status=el('small');status.id='voice-status';status.textContent=typeof voiceStatusText==='undefined'?'使用系统中文声音':voiceStatusText;panel.append(test,status,el('small','推荐晓晓自然女声，默认稍慢、更柔和。勾选联网授权并保存后试听：待朗读文字会发送至微软；音频不保存到磁盘。无需填写语音 API 密钥。游戏模式只播放声音。关闭自然女声可使用系统中文声音。在线服务不可用时会提示，不会自动换回系统声音。'));}
+ if(tab==='voice'){
+  panel.append(el('h3','逐个试听，再选喜欢的'));
+  panel.append(el('small','试听使用同一句示例，不发送聊天记录。勾选上方在线语音授权即可试听，无需先保存；选择后点击「保存声音设置」生效。音色感受以试听为准。'));
+  const list=el('div');list.className='voice-list';
+  for(const [voice,name]of Object.entries(runtime.fields.voice_choice.choices)){
+   const row=el('div');row.className='voice-option';const title=el('span',name),test=el('button','试听'),choose=el('button','选择');
+   test.onclick=()=>{playVoice('试听',true,{voice_neural:true,voice_online_consent:fields.voice_online_consent.checked,voice_choice:voice,voice_rate:Number(fields.voice_rate.value),voice_volume:Number(fields.voice_volume.value),preview:true})};
+   choose.onclick=()=>{fields.voice_choice.value=voice;for(const button of list.querySelectorAll('.voice-choose'))button.textContent='选择';choose.textContent='已选'};choose.className='voice-choose';if(fields.voice_choice.value===voice)choose.textContent='已选';row.append(title,test,choose);list.append(row);
+  }
+  const stop=el('button','停止试听');stop.onclick=()=>stopVoice();const status=el('small');status.id='voice-status';status.setAttribute('role','status');status.textContent=voiceStatusText;
+  panel.append(list,stop,status,el('small','在线朗读会将文字发送至微软，音频不保存到磁盘，无需语音 API 密钥。游戏模式只播放声音。关闭自然女声可使用系统中文声音。服务不可用时不会自动换声音。'));
+ }
  if(tab==='wellbeing'){
   panel.append(el('small','提醒沿用安静时段，睡眠与电脑重启不会清除计时。游戏模式开启后改用语音提醒；正在聊天或操作时会延后，两类提醒至少相隔 5 分钟。'));
   const water=el('button','测试喝水提醒'),move=el('button','测试活动提醒');water.onclick=()=>{if(!previewReminder('water'))error.textContent='请先结束当前回复或提醒再测试。'};move.onclick=()=>{if(!previewReminder('move'))error.textContent='请先结束当前回复或提醒再测试。'};panel.append(water,move,el('small','测试提醒不改变正式计时。'));
