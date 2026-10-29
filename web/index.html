@@ -136,6 +136,7 @@ async function openPanel(tab){const generation=++panelGeneration;interacted();if
 if(tab==='gamewatch'){try{await renderGameWatch(panel,error)}catch(e){error.textContent=e.message}}
 if(tab==='skills'){try{await renderSkills(panel,error)}catch(e){error.textContent=e.message}}
 if(tab==='settings'){
+ panel.append(el('small','夜璃 v'+(state.version||'未知')+' · 安装新版会保留当前账户的配置与聊天数据。'));
  const fields={};
  const add=(key,label,type='text')=>{panel.append(el('label',label));const i=el(type==='textarea'?'textarea':'input');if(type!=='textarea')i.type=type;i.value=key==='api_key'?'':state.settings[key];fields[key]=i;panel.append(i);return i};
  const slider=add('scale','角色大小（实时预览，松手保存）','range');slider.min=.65;slider.max=1.3;slider.step=.01;slider.value=state.settings.scale||1;

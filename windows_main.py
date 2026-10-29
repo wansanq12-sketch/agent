@@ -10,12 +10,13 @@ import tempfile
 import threading
 import traceback
 from app_paths import data_directory
+from app_version import APP_VERSION, prepare_user_data
 
 ROOT=Path(__file__).resolve().parent
 
 def self_test(output):
     """Run on Windows build workers, report native libraries and real bundled resources."""
-    report={'ok':False,'frozen':bool(getattr(sys,'frozen',False)),'platform':sys.platform}
+    report={'version':APP_VERSION,'ok':False,'frozen':bool(getattr(sys,'frozen',False)),'platform':sys.platform}
     captured=io.StringIO()
     previous_stderr=sys.stderr
     sys.stderr=captured
@@ -77,6 +78,7 @@ def main():
         (data/'show-request').write_text('show',encoding='utf-8');lock.close();return 0
     http=None;stop=threading.Event()
     try:
+        prepare_user_data(data)
         import server
         from windows_desktop import run
         http=server.ThreadingHTTPServer(('127.0.0.1',0),server.Handler)

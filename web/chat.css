@@ -87,3 +87,8 @@
 #panel .panel-close{flex-shrink:0;margin:0}
 
 #panel .voice-list{display:grid;gap:10px;margin:12px 0}#panel .voice-option{display:flex;align-items:center;gap:6px;padding:10px;background:#f4effa;border:1px solid #e5ddef;border-radius:12px}#panel .voice-option span{flex:1;font-size:13px}#panel .voice-option button{margin:0;padding:7px 9px;font-size:12px;flex-shrink:0}
+
+/* Keep wheel/trackpad and keyboard scrolling, without a visible scrollbar. */
+#panel{scrollbar-width:none;-ms-overflow-style:none}
+#panel::-webkit-scrollbar,#panel *::-webkit-scrollbar{display:none;width:0;height:0}
+#panel *{scrollbar-width:none}

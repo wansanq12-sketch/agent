@@ -1,5 +1,7 @@
 # 夜璃 Windows 版（待实机验证）
 
+普通用户请使用 Windows 安装版，见 README-EXE.md。以下仅为开发者源码启动方式。
+
 这是可运行源码包，首次安装需要网络和 Python，不是独立 EXE。推荐 Windows 10/11、Python 3.11 或 3.12 64 位。
 
 ## 启动

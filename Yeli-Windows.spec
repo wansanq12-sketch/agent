@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from PyInstaller.utils.hooks import collect_all
 root=Path(SPECPATH)
-datas=[]
+datas=[(str(root/'VERSION'),'.')]
 for folder in ('web','skills','config'):
     for p in (root/folder).rglob('*'):
         if p.is_file() and not p.is_symlink() and not p.name.startswith('.'):
@@ -19,4 +19,4 @@ for package in ('rapidocr_onnxruntime','onnxruntime','edge_tts'):
     datas+=data;binaries+=binary;hiddenimports+=hidden
 analysis=Analysis([str(root/'windows_main.py')],pathex=[str(root)],binaries=binaries,datas=datas,hiddenimports=hiddenimports,hookspath=[],hooksconfig={},runtime_hooks=[],excludes=['tkinter','pytest'],noarchive=False)
 pyz=PYZ(analysis.pure)
-exe=EXE(pyz,analysis.scripts,analysis.binaries,analysis.datas,[],name='Yeli',debug=False,bootloader_ignore_signals=False,strip=False,upx=False,console=False,disable_windowed_traceback=False)
+exe=EXE(pyz,analysis.scripts,analysis.binaries,analysis.datas,[],name='Yeli',debug=False,bootloader_ignore_signals=False,strip=False,upx=False,console=False,version=str(root/'build/windows-version.txt'),disable_windowed_traceback=False)

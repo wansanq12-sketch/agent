@@ -1,40 +1,44 @@
-# 夜璃 EXE 版
+# 夜璃 Windows 安装版
 
-此说明适用于 Windows 构建成功后生成的 Yeli.exe；源码目录本身不包含已构建 EXE。
+## 安装和更新
 
-## 使用者
+1. 在 GitHub Actions 的 **Build Windows Installer** 构建完成后，下载 **Yeli-Windows-Installer**。
+2. 下载内容中的 `Yeli-Setup-1.1.0-x64.exe` 是安装程序。双击安装，不需要安装 Python。
+3. 安装后从开始菜单「夜璃」启动，也可以在安装时选择创建桌面快捷方式。
+4. 后续下载新版本的 `Yeli-Setup-版本号-x64.exe` 直接覆盖安装，无需先卸载；安装器沿用原安装目录。更新时请先退出夜璃。
+5. 程序默认安装到 `%LOCALAPPDATA%\Programs\Yeli`。Windows「已安装的应用」中可查看版本和卸载。
 
-- 解压成品 ZIP，双击 Yeli.exe，不需要安装 Python 或运行依赖安装命令。
-- 首次启动会解压内置运行环境，可能需要等待；后续仍需网络调用你配置的 AI。
-- 设置中填写自己的 API；游戏陪玩必须使用支持图片输入的模型。
-- 同包 hex-aram 文件夹可以直接通过技能管理导入，再启用。
-- 聊天、密钥、记忆与配置保存在 `%LOCALAPPDATA%\Yeli\data`，不会放在 EXE 的临时解压目录。替换 EXE 不会覆盖这些数据。
-- 旧源码版的数据不会自动迁移，请保留旧 data 文件夹；不要把含密钥的数据目录发给别人。
-- Windows 版游戏捕获、透明窗口与独占全屏显示仍需要实机确认。没有匹配版本统计资料时，游戏建议只按机制推理。
-- 若启动报错，查看 `%LOCALAPPDATA%\Yeli\data\startup-error.log` 和 `launch.log`。
+## 配置会保留
 
-## 构建者（不是最终使用者）
+个人数据固定保存在 `%LOCALAPPDATA%\Yeli\data`，与安装目录和版本号无关。API 密钥、角色设置、提醒、声音选择、聊天记录、记忆、导入的技能和游戏陪玩配置均沿用原文件。
 
-PyInstaller 必须在 Windows 上构建 Windows EXE。当前 macOS 开发机不能直接产出已验证的 Windows 成品。
+之前独立 EXE 版本也使用同一个数据目录；在同一个 Windows 用户下安装后可直接读取。源码版位于源码目录的 data 不会自动搬迁，请先保留旧数据并使用备份恢复功能。切换电脑或 Windows 账户时也需要迁移数据。
 
-方式一：在自己的 Windows 构建环境安装 Python 3.12 64 位，安装 requirements-windows.txt 和 PyInstaller 6.17+，运行：
+第一次启动新版时，会在 `data/upgrade-backups` 中备份旧数据库与配置，再写入版本记录。备份包含本机密钥，请妥善保管；软件不会将其上传。新增配置使用默认值，已有配置不会重置。未来若数据格式升级，会检查数据版本，阻止旧程序写入较新的数据格式。
 
-```
+卸载只移除程序和快捷方式，保留个人数据；重新安装后可以继续使用。设置页显示当前软件版本，滚动条隐藏后仍可用滚轮或触控板滚动。
+
+## 声音和游戏陪玩
+
+声音页提供晓晓、晓伊、晓臻、晓雨四种女声，支持试听、选择和保存。在线朗读需允许将待朗读文字发送至微软，音频不落盘，无需语音密钥。试听只发送固定示例。游戏模式只播放声音，不弹回复气泡。
+
+AI 聊天仍使用你配置的 API，游戏陪玩需支持图片输入的模型。安装目录的 `skills/hex-aram` 可通过技能管理导入。Windows 游戏捕获、桌面交互与独占全屏显示仍需实机验证。
+
+启动失败可查看 `%LOCALAPPDATA%\Yeli\data\startup-error.log` 和 `launch.log`。
+
+## 构建和版本管理
+
+`VERSION` 是版本号唯一来源（主版本.次版本.修订号）。发布新版本时修改它，并更新 CHANGELOG.md。Windows EXE 的文件属性、安装器、设置页和发布清单统一读取此版本。
+
+构建步骤：
+
+```text
 python -m pip install -r requirements-windows.txt "pyinstaller>=6.17,<7"
+python tools/windows_version.py
 python -m PyInstaller --noconfirm --clean Yeli-Windows.spec
+ISCC.exe /DAppVersion=1.1.0 installer/Yeli.iss
 ```
 
-成品是 `dist/Yeli.exe`，Python、Qt WebEngine、OCR 模型与依赖、人物素材均随程序打包。不要分发源码 data 文件夹。未配置代码签名证书，因此不是签名发行版；不要为了运行它关闭系统保护。
+构建必须在 Windows 上进行。GitHub Actions 会构建安装器，测试旧版安装 → 新版覆盖安装 → 卸载，校验用户数据不变，并运行安装后的 EXE 检查内置 OCR、素材与本机 API。检查不读取或发送真实屏幕。
 
-方式二：把不含个人数据的源码放到你自己的 GitHub 仓库，包含 `.github/workflows/windows-exe.yml`。在 Actions → Build Windows EXE → Run workflow 手动启动。构建成功后下载 Yeli-Windows-EXE artifact。此流程只读仓库、生成构建产物，不自动发布或部署。
-
-自动检查会实际运行打包后的 EXE，验证内置 OCR 原生库/模型、人物图片和本机 API，不会读取或发送你的屏幕。它不等同于真人游戏与桌面交互测试。未经运行成功，不应把构建配置当作已交付的 EXE。
-
-## 交互与声音更新
-
-输入框发送后保持打开，点击外部收起。右键精简为设置、隐藏、游戏模式和退出；隐藏后通过托盘显示。声音设置位于设置面板的声音页，游戏模式使用系统中文语音并隐藏回复气泡。Windows 需已安装中文语音包，可以先试听；没有可用声音时设置页会显示原因，不额外调用语音 API。更新只替换 EXE，保留用户数据目录。
-
-### 自然女声与固定关闭按钮
-声音页推荐微软在线晓晓女声，语速默认略慢。勾选联网授权、保存后试听；待朗读文字发送至微软，音频仅在内存中播放，不落盘，无需语音密钥。服务故障时提示重试，不自动切换系统声音。关闭自然女声可使用原有系统中文声音。设置顶部标题和关闭按钮固定，滚动后仍可关闭。
-
-声音页提供晓晓、晓伊、晓臻、晓雨四种女声，逐个点击试听，选择后保存。试听只发送固定示例，不发送聊天记录；允许联网后无需先保存即可试听。语速与音量按当前填写的值试听，试听不会改变已保存的声音。
+最终产物为版本化安装器、release.json 和 SHA256SUMS.txt；不会上传个人数据，也不会自动发布 GitHub Release。安装器尚未配置代码签名。

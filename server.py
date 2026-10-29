@@ -8,6 +8,7 @@ from skills_manager import SkillManager
 from game_watch import GameWatch
 from database import connection
 from speech_service import synthesize
+from app_version import APP_VERSION, DATA_VERSION
 from urllib.parse import urlsplit
 from contextlib import contextmanager
 from pathlib import Path
@@ -269,7 +270,7 @@ class Handler(BaseHTTPRequestHandler):
                     messages = [dict(id=r[0], role=r[1], content=r[2]) for r in db.execute('SELECT id,role,content FROM messages ORDER BY id DESC LIMIT 50')][::-1]
                     memories = [dict(id=r[0], content=r[1]) for r in db.execute('SELECT id,content FROM memories ORDER BY id')]
                     draft = db.execute('SELECT content FROM drafts WHERE id=1').fetchone()
-                return self.reply(dict(settings=s, messages=messages, memories=memories, draft=draft[0] if draft else '', schedule=schedule(), runtime_error=RUNTIME.error))
+                return self.reply(dict(version=APP_VERSION, data_version=DATA_VERSION, settings=s, messages=messages, memories=memories, draft=draft[0] if draft else '', schedule=schedule(), runtime_error=RUNTIME.error))
             if self.path == '/api/draft':
                 content = str(data.get('content', ''))[:12000]
                 with connect() as db:
