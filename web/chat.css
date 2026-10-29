@@ -1,0 +1,53 @@
+/* Night-sky surfaces stay legible over both light and dark desktop wallpapers. */
+:root{--chat-ink:#edf3ff;--chat-muted:#aebbd4;--chat-line:rgba(193,211,247,.22);--chat-surface:#202a40}
+.chat-icon{display:block;width:16px;height:16px;flex-shrink:0;overflow:visible;filter:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#pet{bottom:100px}
+#bubble{left:36px;width:372px;max-width:calc(100vw - 52px);max-height:none;padding:0;overflow:visible;white-space:normal;border:1px solid var(--chat-line);border-radius:22px;background:linear-gradient(145deg,rgba(45,57,82,.98),rgba(27,36,56,.98));color:var(--chat-ink);box-shadow:0 12px 30px rgba(9,18,37,.18),inset 0 1px 0 rgba(255,255,255,.08);cursor:default;animation:chat-appear .16s ease-out}
+#bubble::after{content:'';position:absolute;width:11px;height:11px;right:88px;bottom:-6px;transform:rotate(45deg);background:#1e283e;border-right:1px solid var(--chat-line);border-bottom:1px solid var(--chat-line);pointer-events:none}
+.speech-header{display:flex;align-items:center;gap:8px;padding:13px 14px 0;min-height:36px;color:#d3e3ff;font-size:12px;line-height:1;letter-spacing:.03em}
+.moon-mark{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:9px;background:rgba(172,200,255,.1);color:#c7dcff}
+#speaker-name{font-weight:600}
+.speech-caption{margin-left:1px;color:var(--chat-muted);font-size:10px;letter-spacing:.04em}
+#fold-reply{margin-left:auto;width:24px;height:24px;padding:4px;background:transparent;color:#acbad3;border-radius:8px}
+#fold-reply:hover{color:#eef5ff;background:rgba(193,211,247,.1)}
+#fold-reply:disabled{opacity:.35;cursor:default}
+#bubble-content{max-height:var(--bubble-content-max,210px);padding:10px 17px 17px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#64718c transparent}
+#bubble-content::-webkit-scrollbar{width:4px}#bubble-content::-webkit-scrollbar-thumb{background:#64718c;border-radius:4px}
+#speech{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.85;letter-spacing:.01em;cursor:pointer;user-select:text}
+#memory{margin:13px 0 0;padding:12px;border:1px solid rgba(165,194,246,.18);border-radius:13px;background:rgba(165,194,246,.055);color:#c9d8f1;font-size:12px;line-height:1.75}
+.memory-caption{margin-bottom:5px;color:#99b8ec;font-size:10px;letter-spacing:.08em}
+#memory button{margin:10px 7px 0 0;padding:6px 12px;border-radius:8px;background:rgba(196,213,244,.09);color:#c3cfe4;font-size:11px;line-height:1.5}
+#memory button:first-of-type{background:#b7cff5;color:#1e304e;font-weight:600}
+#memory button:hover{filter:brightness(1.12)}
+#compose{right:16px;bottom:14px;width:384px;max-width:calc(100vw - 32px);padding:9px 11px 10px;display:flex;flex-direction:column;gap:5px;border:1px solid var(--chat-line);border-radius:19px;background:linear-gradient(135deg,rgba(41,53,77,.98),rgba(27,37,57,.98));box-shadow:0 8px 24px rgba(9,18,37,.17),inset 0 1px 0 rgba(255,255,255,.07);animation:chat-appear .14s ease-out;transition:border-color .15s,box-shadow .15s}
+#compose:focus-within{border-color:rgba(173,204,255,.65);box-shadow:0 8px 24px rgba(9,18,37,.17),0 0 0 2px rgba(167,196,246,.08)}
+.compose-header{display:flex;align-items:center;gap:7px;height:18px;min-width:0;color:#b8c8e4}
+.compose-header>.chat-icon{width:12px;height:12px;color:#a7c6f9}
+.compose-label{font-size:10px;letter-spacing:.04em;white-space:nowrap}
+#draft-status{position:static;flex:1;min-width:0;margin:0;text-align:right;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:9px;line-height:18px;color:#9eabc4}
+#more,#close-compose{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:21px;height:21px;padding:3px;border:0;border-radius:6px;background:transparent;color:#acbad3}
+#more:hover,#close-compose:hover{background:rgba(193,211,247,.1);color:#e5eeff}
+#more .chat-icon,#close-compose .chat-icon{width:13px;height:13px}
+.compose-line{display:flex;align-items:center;gap:7px;min-width:0}
+#input{flex:1;width:0;min-width:0;height:32px;padding:5px 3px;border:0;border-radius:0;background:transparent;box-shadow:none;color:#f0f4ff;font-size:13px;line-height:22px;letter-spacing:.01em;outline:none}
+#input::placeholder{color:#99a9c5;opacity:1}
+#input[readonly]{color:#b7c5df}
+#send{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:32px;height:32px;padding:8px;border-radius:11px;background:linear-gradient(145deg,#c4ddff,#a9b8ef);color:#223553;box-shadow:inset 0 1px 0 rgba(255,255,255,.5);transition:filter .15s}
+#send:hover{filter:brightness(1.08)}#send:disabled{opacity:.4;filter:none;cursor:default}
+#cancel{padding:6px 8px;border:1px solid rgba(193,211,247,.16);border-radius:9px;background:rgba(193,211,247,.06);color:#cbd8ee;font-size:11px;white-space:nowrap}
+#dot{display:flex;align-items:center;justify-content:center;gap:5px;right:40px;width:52px;height:30px;padding:5px 9px;border:1px solid var(--chat-line);border-radius:12px;background:#253149;color:#c4d7f7;box-shadow:0 4px 12px rgba(9,18,37,.12);font-size:15px;letter-spacing:2px}
+#dot .chat-icon{width:12px;height:12px;stroke-width:1.5}
+#dot:hover{background:#33425e}
+#reload-motion{bottom:390px}
+#compose button:focus-visible,#bubble button:focus-visible,#dot:focus-visible{outline:2px solid #c3daff;outline-offset:3px}
+@keyframes chat-appear{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#bubble,#compose{animation:none;transition:none}}
+#reminder{position:absolute;left:36px;width:372px;max-width:calc(100vw - 52px);padding:14px 16px;border:1px solid var(--chat-line);border-radius:19px;background:linear-gradient(145deg,#2b3b51,#202d44);color:var(--chat-ink);box-shadow:0 10px 28px #0912252b;z-index:12}
+.reminder-header{display:flex;align-items:center;gap:8px;color:#b6d5ee;font-size:11px;letter-spacing:.06em}
+#reminder-skip{margin-left:auto;width:23px;height:23px;padding:2px;background:transparent;color:#afbdd4;font-size:18px}
+#reminder-text{padding:7px 0 11px;font-size:14px;line-height:1.8}
+.reminder-actions{display:flex;gap:8px}
+.reminder-actions button{font-size:12px;padding:6px 12px;background:#b7cff5;color:#243752}
+#reminder-snooze{background:#40526e;color:#dce7f7}
+#reminder-error{margin:7px 0 0;color:#e9bbbd;font-size:11px}#reminder-error:empty{display:none}
+.docked #reminder{display:none!important}

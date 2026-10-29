@@ -1,0 +1,8 @@
+{
+  "process": "League of Legends.exe",
+  "crop": [0.1, 0.12, 0.9, 0.88],
+  "triggers": {
+    "augment": [["强化", "刷新"], ["强化", "选择"], ["选择你的强化符文"]],
+    "shop": [["推荐", "所有物品"], ["购买", "出售"], ["Recommended", "AllItems"]]
+  }
+}

@@ -1,0 +1,51 @@
+name: Build Windows EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, yeli-windows-build]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+          cache: pip
+          cache-dependency-path: requirements-windows.txt
+      - name: Install build dependencies
+        run: python -m pip install -r requirements-windows.txt "pyinstaller>=6.17,<7"
+      - name: Build standalone EXE
+        run: python -m PyInstaller --noconfirm --clean Yeli-Windows.spec
+      - name: Test bundled assets, OCR and API
+        shell: pwsh
+        run: |
+          $process = Start-Process -FilePath dist/Yeli.exe -ArgumentList '--self-test', 'dist/self-test.json' -Wait -PassThru
+          if ($process.ExitCode -ne 0) { Get-Content dist/self-test.json; throw 'EXE self-test failed' }
+          $report = Get-Content dist/self-test.json -Raw | ConvertFrom-Json
+          if (-not $report.ok -or -not $report.frozen) { throw 'Self-test did not validate a frozen EXE' }
+      - name: Prepare end-user archive
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/release | Out-Null
+          Copy-Item dist/Yeli.exe dist/release/
+          Copy-Item README-EXE.md dist/release/
+          Copy-Item -Recurse skills/hex-aram dist/release/hex-aram
+          Compress-Archive -Path dist/release/* -DestinationPath dist/Yeli-Windows-EXE.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Yeli-Windows-EXE
+          path: dist/Yeli-Windows-EXE.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-build-diagnostics
+          path: |
+            dist/self-test.json
+            build/Yeli-Windows/warn-Yeli-Windows.txt
+          if-no-files-found: ignore
