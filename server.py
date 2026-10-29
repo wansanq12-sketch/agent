@@ -7,6 +7,7 @@ from reminders import ReminderService
 from skills_manager import SkillManager
 from game_watch import GameWatch
 from database import connection
+from speech_service import synthesize
 from urllib.parse import urlsplit
 from contextlib import contextmanager
 from pathlib import Path
@@ -161,6 +162,8 @@ class Handler(BaseHTTPRequestHandler):
             if length < 0 or length > (3100000 if self.path == '/api/skills' else 100000):
                 raise ValueError('内容过长')
             data = json.loads(self.rfile.read(length) or '{}')
+            if self.path == '/api/speech':
+                return self.reply(synthesize(data.get('text'), settings()))
             if self.path == '/api/game-watch':
                 action = data.get('action', 'status')
                 if action == 'configure':

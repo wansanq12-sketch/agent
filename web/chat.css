@@ -80,3 +80,8 @@
 #reminder{background:linear-gradient(145deg,#fffffffc,#edf5fffc);color:#526d93;border-color:#d9e6f5;box-shadow:0 10px 28px #5c7c9e18}.reminder-header{color:#839cbc}#reminder-skip{color:#93a4ba}.reminder-actions button{background:#d4e3f8;color:#57739a}#reminder-snooze{background:#e7effa;color:#7a90af}#reminder-error{color:#c47881}
 #panel input[type=range]{appearance:none;-webkit-appearance:none;height:6px;background:#dfe9f7;border:0;border-radius:8px;margin:13px 0 8px;cursor:pointer}
 #panel input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:#a5bfe3;border:3px solid #f8fbff;box-shadow:0 2px 6px #7b9cc336}
+
+/* Keep the close control reachable while long settings pages scroll. */
+#panel .panel-header{position:sticky;top:-20px;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-20px -20px 16px;padding:18px 20px 12px;background:#fbf8ff;border-bottom:1px solid #e9e1f2;border-radius:18px 18px 0 0}
+#panel .panel-header h2{margin:0;font-size:20px}
+#panel .panel-close{flex-shrink:0;margin:0}

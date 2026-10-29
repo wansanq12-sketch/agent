@@ -14,7 +14,7 @@ manifest=json.loads((root/'assets/actions/manifest.json').read_text(encoding='ut
 for name in sorted({a['file'] for a in manifest['actions'].values()}):
     datas.append((str(root/'assets/actions'/name),'assets/actions'))
 binaries=[];hiddenimports=[]
-for package in ('rapidocr_onnxruntime','onnxruntime'):
+for package in ('rapidocr_onnxruntime','onnxruntime','edge_tts'):
     data,binary,hidden=collect_all(package)
     datas+=data;binaries+=binary;hiddenimports+=hidden
 analysis=Analysis([str(root/'windows_main.py')],pathex=[str(root)],binaries=binaries,datas=datas,hiddenimports=hiddenimports,hookspath=[],hooksconfig={},runtime_hooks=[],excludes=['tkinter','pytest'],noarchive=False)

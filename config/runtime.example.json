@@ -24,5 +24,7 @@
   "voice_volume": 80,
   "backup_enabled": true,
   "backup_interval_hours": 24,
-  "backup_keep": 7
+  "backup_keep": 7,
+  "voice_neural": true,
+  "voice_online_consent": false
 }

@@ -12,7 +12,7 @@ from PySide6.QtCore import QFile, QIODevice, QObject, QPoint, Qt, QTimer, QUrl, 
 from PySide6.QtGui import QAction, QColor, QCursor, QIcon, QPainter, QPixmap
 from PySide6.QtWidgets import QApplication, QFileDialog, QMenu, QSystemTrayIcon, QVBoxLayout, QWidget
 from PySide6.QtWebChannel import QWebChannel
-from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile, QWebEngineScript
+from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile, QWebEngineScript, QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtTextToSpeech import QTextToSpeech
 
@@ -46,6 +46,7 @@ class PetWindow(QWidget):
         self.profile=QWebEngineProfile(self)
         self.view=QWebEngineView(self)
         self.page=LocalPage(self.profile,self.view,url);self.page.setBackgroundColor(QColor(0,0,0,0));self.view.setPage(self.page)
+        self.page.settings().setAttribute(QWebEngineSettings.WebAttribute.PlaybackRequiresUserGesture,False)
         self.view.setStyleSheet('background:transparent');self.view.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         layout=QVBoxLayout(self);layout.setContentsMargins(0,0,0,0);layout.addWidget(self.view)
         self.channel=QWebChannel(self.page);self.bridge=Bridge(self);self.channel.registerObject('desktop',self.bridge);self.page.setWebChannel(self.channel)

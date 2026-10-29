@@ -25,6 +25,8 @@ FIELDS = {
     'move_reminder_enabled': dict(type='bool', default=True, group='reminders', label='开启活动提醒'),
     'move_reminder_interval': dict(type='int', default=60, min=10, max=240, group='reminders', label='活动提醒间隔（分钟）'),
     'game_mode': dict(type='bool', default=False, group='gaming', label='开启游戏模式（高层置顶）'),
+    'voice_neural': dict(type='bool', default=True, group='voice', label='使用温柔自然女声 · 晓晓（联网）'),
+    'voice_online_consent': dict(type='bool', default=False, group='voice', label='允许将待朗读文字发送至微软在线语音服务'),
     'voice_normal_chat': dict(type='bool', default=False, group='voice', label='平时聊天也朗读回复'),
     'voice_rate': dict(type='int', default=100, min=60, max=160, group='voice', label='语音速度（100 为正常）'),
     'voice_volume': dict(type='int', default=80, min=0, max=100, group='voice', label='语音音量'),

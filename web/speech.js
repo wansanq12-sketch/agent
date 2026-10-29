@@ -1,11 +1,23 @@
-let voiceSpeaking=false,voiceStatusText='使用系统中文声音',voiceSequence=0;
+let voiceSpeaking=false,voiceStatusText='推荐温柔自然女声 · 晓晓',voiceSequence=0,voiceAudio=null;
 function voiceStatus(available,message){voiceStatusText=message||(available?'声音已就绪':'系统语音不可用');const label=document.querySelector('#voice-status');if(label)label.textContent=voiceStatusText;if(!available)voiceFinished()}
 function voiceFinished(){voiceSpeaking=false;if(typeof finishSpeechMotion==='function')finishSpeechMotion(typeof replyEmotion==='undefined'?'idle':replyEmotion)}
-function stopVoice(){voiceSequence++;voiceSpeaking=false;if(window.webkit?.messageHandlers?.desktop)native('stopSpeech');else window.speechSynthesis?.cancel();voiceFinished()}
+function stopVoice(finish=true){voiceSequence++;if(voiceAudio){voiceAudio.pause();voiceAudio.removeAttribute('src');voiceAudio.load();voiceAudio=null}voiceSpeaking=false;if(window.webkit?.messageHandlers?.desktop)native('stopSpeech');else window.speechSynthesis?.cancel();if(finish)voiceFinished()}
 function playVoice(text,force=false){
  if(!text)return false;
- const sequence=++voiceSequence,settings=typeof state==='undefined'?{}:state?.settings||{};voiceSpeaking=true;
+ stopVoice(false);const sequence=++voiceSequence,settings=typeof state==='undefined'?{}:state?.settings||{};voiceSpeaking=true;
  const rate=settings.voice_rate??100,volume=settings.voice_volume??80;
+ if(settings.voice_neural!==false){
+  if(!settings.voice_online_consent){voiceStatus(false,'请在声音设置中勾选微软在线语音授权，保存后试听');return false}
+  voiceStatus(true,'正在生成晓晓的声音…');
+  api('speech',{text:String(text)}).then(result=>{
+   if(sequence!==voiceSequence)return;
+   const audio=new Audio('data:'+result.mime+';base64,'+result.audio);voiceAudio=audio;audio.volume=volume/100;
+   audio.onended=()=>{if(sequence===voiceSequence){voiceAudio=null;voiceStatus(true,'晓晓 · 温柔自然女声');voiceFinished()}};
+   audio.onerror=()=>{if(sequence===voiceSequence)voiceStatus(false,'音频播放失败，请检查声音输出设备')};
+   return audio.play();
+  }).catch(error=>{if(sequence===voiceSequence)voiceStatus(false,error.message||'自然语音播放失败，请重试')});return true;
+ }
+
  if(window.webkit?.messageHandlers?.desktop){native('speak',{text:String(text),rate,volume});return true}
  if(window.speechSynthesis&&typeof SpeechSynthesisUtterance!=='undefined'){
   window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(String(text));speech.lang='zh-CN';speech.rate=rate/100;speech.volume=volume/100;
