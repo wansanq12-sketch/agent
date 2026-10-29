@@ -1,7 +1,7 @@
 """Local, persistent water/movement reminder clocks; no model calls or system notifications."""
 import json
 import secrets
-import sqlite3
+from database import connection
 import threading
 import time
 
@@ -12,13 +12,13 @@ DISPLAY_MS=30000
 class ReminderService:
     def __init__(self,database,config,clock=None):
         self.database=database;self.config=config;self.clock=clock or (lambda:int(time.time()*1000));self.lock=threading.RLock()
-        with sqlite3.connect(database) as db:db.execute('CREATE TABLE IF NOT EXISTS reminder_schedule(id INTEGER PRIMARY KEY CHECK(id=1),value TEXT NOT NULL)')
+        with connection(database) as db:db.execute('CREATE TABLE IF NOT EXISTS reminder_schedule(id INTEGER PRIMARY KEY CHECK(id=1),value TEXT NOT NULL)')
 
     def _save(self,state):
-        with sqlite3.connect(self.database) as db:db.execute('INSERT OR REPLACE INTO reminder_schedule VALUES (1,?)',(json.dumps(state),))
+        with connection(self.database) as db:db.execute('INSERT OR REPLACE INTO reminder_schedule VALUES (1,?)',(json.dumps(state),))
 
     def _load(self,now):
-        with sqlite3.connect(self.database) as db:row=db.execute('SELECT value FROM reminder_schedule WHERE id=1').fetchone()
+        with connection(self.database) as db:row=db.execute('SELECT value FROM reminder_schedule WHERE id=1').fetchone()
         state=json.loads(row[0]) if row else {'last_shown':0,'active':None}
         config=self.config.snapshot();changed=not bool(row)
         for kind,(enable,interval) in KINDS.items():

@@ -76,7 +76,7 @@ class RuntimeConfig:
             except ValueError as exc:
                 self.error = str(exc)
                 try:
-                    self.value = validate(json.loads(self.good_path.read_text()))
+                    self.value = validate(json.loads(self.good_path.read_text(encoding='utf-8')))
                 except (OSError, ValueError):
                     self.value = dict(DEFAULTS)
 

@@ -6,6 +6,7 @@ from backups import BackupManager
 from reminders import ReminderService
 from skills_manager import SkillManager
 from game_watch import GameWatch
+from database import connection
 from urllib.parse import urlsplit
 from contextlib import contextmanager
 from pathlib import Path
@@ -38,7 +39,7 @@ def chat_job(request_id):
             ACTIVE_JOBS.discard(request_id)
 
 def connect():
-    return sqlite3.connect(DB)
+    return connection(DB)
 
 with connect() as db:
     db.executescript('CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY, value TEXT); CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, role TEXT, content TEXT, time TEXT DEFAULT CURRENT_TIMESTAMP); CREATE TABLE IF NOT EXISTS memories (id INTEGER PRIMARY KEY, content TEXT); CREATE TABLE IF NOT EXISTS drafts (id INTEGER PRIMARY KEY CHECK(id=1), content TEXT NOT NULL); CREATE TABLE IF NOT EXISTS runtime_schedule (id INTEGER PRIMARY KEY CHECK(id=1), value TEXT NOT NULL);')
@@ -143,7 +144,7 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif self.path == '/':
-            body = (ROOT / 'web/index.html').read_text().replace('__TOKEN__', TOKEN).encode()
+            body = (ROOT / 'web/index.html').read_text(encoding='utf-8').replace('__TOKEN__', TOKEN).encode()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')
             self.send_header('Cache-Control', 'no-store')

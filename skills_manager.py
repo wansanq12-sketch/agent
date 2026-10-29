@@ -6,6 +6,7 @@ import json
 import re
 import sqlite3
 import zipfile
+from database import connection
 from pathlib import PurePosixPath
 
 MAX_IMPORT = 2 * 1024 * 1024
@@ -38,7 +39,7 @@ class SkillManager:
             connection.execute('CREATE TABLE IF NOT EXISTS skills (id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE COLLATE NOCASE, description TEXT NOT NULL, content TEXT NOT NULL, files TEXT NOT NULL, enabled INTEGER NOT NULL DEFAULT 0)')
 
     def connect(self):
-        return sqlite3.connect(self.db)
+        return connection(self.db)
 
     def list(self):
         with self.connect() as db:

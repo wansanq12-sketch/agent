@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import re
 import secrets
-import sqlite3
+from database import connection
 import tempfile
 import threading
 import time
@@ -31,7 +31,7 @@ class BackupManager:
             return dict(error=self.error, path=str(self.folder), files=[dict(name=p.name,size=p.stat().st_size,time=p.stat().st_mtime) for p in self.files()])
 
     def _snapshot(self):
-        with sqlite3.connect(self.database) as db:
+        with connection(self.database) as db:
             db.execute('BEGIN')
             messages=[dict(role=r[0],content=r[1],time=r[2]) for r in db.execute('SELECT role,content,time FROM messages ORDER BY id')]
             memories=[dict(content=r[0]) for r in db.execute('SELECT content FROM memories ORDER BY id')]
@@ -102,7 +102,7 @@ class BackupManager:
             if not isinstance(digest,str) or not secrets.compare_digest(actual,digest):raise ValueError('备份已变化，请重新预览后恢复')
             # Keep this recovery snapshot outside normal retention pruning until a successful restore.
             recovery=self.create(prune=False)
-            with sqlite3.connect(self.database) as db:
+            with connection(self.database) as db:
                 db.execute('BEGIN IMMEDIATE')
                 db.execute('DELETE FROM messages');db.execute('DELETE FROM memories')
                 db.executemany('INSERT INTO messages(role,content,time) VALUES (?,?,?)',[(r['role'],r['content'],r.get('time') or datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')) for r in payload['messages']])

@@ -2,6 +2,7 @@
 import multiprocessing
 multiprocessing.freeze_support()
 import json
+import io
 import os
 from pathlib import Path
 import sys
@@ -15,6 +16,9 @@ ROOT=Path(__file__).resolve().parent
 def self_test(output):
     """Run on Windows build workers, report native libraries and real bundled resources."""
     report={'ok':False,'frozen':bool(getattr(sys,'frozen',False)),'platform':sys.platform}
+    captured=io.StringIO()
+    previous_stderr=sys.stderr
+    sys.stderr=captured
     try:
         if sys.platform!='win32':raise RuntimeError('EXE self-test requires Windows')
         from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -44,9 +48,11 @@ def self_test(output):
                     if b'__TOKEN__' in response.read():raise RuntimeError('Web token was not injected')
             finally:
                 http.shutdown();http.server_close();worker.join(2)
-                server.db.close()
         report.update(ok=True,assets=len(manifest['actions']),api='passed')
     except Exception:report['error']=traceback.format_exc()
+    finally:
+        sys.stderr=previous_stderr
+        if captured.getvalue():report['runtime_log']=captured.getvalue()[-12000:]
     Path(output).write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     return 0 if report['ok'] else 1
 
