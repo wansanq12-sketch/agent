@@ -9,15 +9,15 @@
 <button id="dot" hidden title="回看回复" aria-label="展开回复"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.2A8.8 8.8 0 0 1 9.8 3.4 8.8 8.8 0 1 0 20.6 14.2Z"/></svg><span aria-hidden="true">···</span></button>
 <div id="pet" role="button" tabindex="0" aria-label="夜璃：点击聊天，拖动移动，右键打开菜单"><img id="portrait" src="/assets/yeli-reference-v1.png" alt="Yeli" draggable="false"><svg viewBox="0 0 200 280" aria-label="银发蓝眼的夜璃"><g id="figure"><ellipse cx="101" cy="268" rx="52" ry="7" fill="#162034" opacity=".15"/><g class="hair"><path d="M48 68Q35 117 37 210L58 234 70 192 136 195 147 235 169 215Q163 140 155 71Z" fill="#bdc8dc" stroke="#66728d" stroke-width="2"/><path d="M43 116L45 212M155 115L159 215" stroke="#edf4ff" stroke-width="7" opacity=".7"/></g><path d="M74 225L74 259Q84 265 92 258L94 225M110 225L111 258Q121 265 129 258L130 225" fill="#e4d9dd" stroke="#776f88" stroke-width="2"/><path d="M73 247L92 247 92 265Q80 272 67 265ZM111 247L130 247 137 265Q122 271 111 265Z" fill="#33394b"/><path d="M65 191L57 232Q100 250 145 232L136 191Z" fill="#303548" stroke="#191f31" stroke-width="2"/><path d="M74 201L69 235M93 202L92 239M111 202L114 238M128 201L136 235" stroke="#626b85" stroke-width="2"/><g id="armL"><path d="M64 159Q40 165 36 198Q37 210 49 207L70 177" fill="#474957" stroke="#252d43" stroke-width="2"/><ellipse cx="42" cy="207" rx="9" ry="10" fill="#f3dce0"/></g><g id="armR"><path d="M139 160Q158 163 163 198Q161 211 149 206L132 179" fill="#474957" stroke="#252d43" stroke-width="2"/><ellipse cx="157" cy="207" rx="9" ry="10" fill="#f3dce0"/></g><path d="M72 148Q99 139 129 148L140 198Q103 211 61 198Z" fill="#484b59" stroke="#252d43" stroke-width="2"/><path d="M72 148Q99 169 129 148L124 169Q99 184 76 169Z" fill="#646674"/><path d="M75 187L126 187M74 193L128 193" stroke="#7c7d87" opacity=".45"/><g id="head"><ellipse cx="100" cy="92" rx="60" ry="61" fill="#f6e3e5" stroke="#747f99" stroke-width="2"/><path d="M40 97Q24 27 85 22Q151 9 163 79L157 112 143 74 135 88 117 53 110 85 89 58 75 89 64 66 48 108Z" fill="#e2e9f4" stroke="#74819c" stroke-width="2"/><path d="M51 59Q74 28 109 33M122 35Q143 41 151 58" fill="none" stroke="#fff" stroke-width="4"/><path class="brow" d="M64 97Q76 91 86 96M113 96Q124 91 136 97" fill="none" stroke="#8890aa" stroke-width="2"/><g class="eye"><ellipse cx="76" cy="111" rx="10" ry="13" fill="#eaf4ff"/><ellipse cx="77" cy="113" rx="7" ry="11" fill="#5a9fd4"/><ellipse cx="78" cy="115" rx="4" ry="7" fill="#285484"/><circle cx="74" cy="108" r="3" fill="white"/><path d="M64 103Q76 98 86 103" stroke="#47546e" stroke-width="3" fill="none"/></g><g class="eye"><ellipse cx="124" cy="111" rx="10" ry="13" fill="#eaf4ff"/><ellipse cx="123" cy="113" rx="7" ry="11" fill="#5a9fd4"/><ellipse cx="122" cy="115" rx="4" ry="7" fill="#285484"/><circle cx="120" cy="108" r="3" fill="white"/><path d="M114 103Q125 98 136 103" stroke="#47546e" stroke-width="3" fill="none"/></g><ellipse cx="60" cy="125" rx="9" ry="4" fill="#eebdce" opacity=".6"/><ellipse cx="139" cy="125" rx="9" ry="4" fill="#eebdce" opacity=".6"/><path d="M94 135Q100 140 107 134" fill="none" stroke="#a87889" stroke-width="2" stroke-linecap="round"/><path d="M149 49a15 15 0 1 0 11 23 12 12 0 0 1-11-23" fill="#b6e4ff" stroke="#719dc4" stroke-width="1.5"/></g><g id="glow"><circle cx="157" cy="194" r="24" fill="#8edcff" opacity=".2"/><circle cx="157" cy="194" r="11" fill="#b7eeff"/><path d="M155 164v9M176 178l8-5M130 177l-8-5" stroke="#b7eeff" stroke-width="3"/></g></g></svg></div>
 <form id="compose" hidden>
- <div class="compose-header"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.2A8.8 8.8 0 0 1 9.8 3.4 8.8 8.8 0 1 0 20.6 14.2Z"/></svg><span class="compose-label">和<span id="compose-name">夜璃</span>聊聊</span><small id="draft-status" role="status"></small><button type="button" id="more" aria-label="更多选项" title="聊天、记忆与设置"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button><button type="button" id="close-compose" aria-label="收起输入框" title="收起 · Esc"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+ <div class="compose-header"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.2A8.8 8.8 0 0 1 9.8 3.4 8.8 8.8 0 1 0 20.6 14.2Z"/></svg><span class="compose-label">和<span id="compose-name">夜璃</span>聊聊</span><small id="draft-status" role="status"></small><button type="button" id="more" aria-label="更多选项" title="聊天、记忆与设置"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="2" fill="currentColor" stroke="none"/></svg></button></div>
  <div class="compose-line"><input id="input" maxlength="12000" placeholder="哥哥，今天想聊点什么？" autocomplete="off" aria-label="聊天内容"><button type="button" id="cancel" hidden>取消</button><button id="send" aria-label="发送消息" title="发送 · Enter"><svg class="chat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 10 16-6-6 16-3-7-7-3Z"/><path d="m11 13 9-9"/></svg></button></div>
 </form>
 <div id="reminder" hidden role="status" aria-live="polite">
  <div class="reminder-header"><span id="reminder-kind">喝水提醒</span><button type="button" id="reminder-skip" aria-label="略过这次提醒">×</button></div>
  <div id="reminder-text"></div><div class="reminder-actions"><button type="button" id="reminder-done">喝过了</button><button type="button" id="reminder-snooze">10 分钟后</button></div><small id="reminder-error"></small>
 </div>
-<button id="reload-motion" hidden>形象加载失败，点击重试</button><div id="panel" hidden></div><div id="menu" hidden><button data-panel="history">聊天记录</button><button data-panel="memories">长期记忆</button><button data-panel="settings">设置与大小</button><button data-panel="gamewatch">游戏陪玩</button><button data-panel="skills">技能管理</button><button data-panel="runtime">运行配置</button><button data-panel="wellbeing">喝水、活动与游戏</button><button id="game-mode-toggle">开启游戏模式</button><button id="quit">退出夜璃</button></div>
-<script src="/behavior.js"></script><script src="/input.js"></script><script>
+<button id="reload-motion" hidden>形象加载失败，点击重试</button><div id="panel" hidden></div><div id="menu" hidden><button data-panel="settings">设置</button><button id="hide-pet">隐藏</button><button id="game-mode-toggle">开启游戏模式</button><button id="quit">退出</button></div>
+<script src="/behavior.js"></script><script src="/input.js"></script><script src="/speech.js"></script><script>
 const $=s=>document.querySelector(s),pet=$('#pet');let state,busy=false,dock='',typing=null,fold=null,full='',pending=null,last=Date.now(),attempts=0,lastWave=0,waiting=false,scale=1,replyEmotion='idle',inviteTimer=null,chatRequest=null;
 function native(action,extra={}){window.webkit?.messageHandlers?.desktop?.postMessage({action,...extra})}
 let scheduleQueue=Promise.resolve(),scheduleError='',invitationGeneration=0,invitationSaving=false;
@@ -42,7 +42,7 @@ function regions(){
   if(selector==='#pet'&&mask){footprint={...mask,x:r.x,y:r.y,w:r.width,h:r.height,clip:dock ? .45 : 1};continue}
   rects.push({x:r.x,y:r.y,w:r.width,h:selector==='#pet'&&dock?r.height*.45:r.height});
  }
- const value=JSON.stringify({rects,pet:footprint});if(value!==lastRegions){lastRegions=value;native('regions',{rects,pet:footprint})}
+ const value=JSON.stringify({rects,pet:footprint});if(value!==lastRegions){lastRegions=value;native('regions',{rects,pet:footprint,composer:!$('#compose').hidden,menu:!$('#menu').hidden})}
 }
 setInterval(regions,120);
 async function api(path,data={},signal){let r=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','X-Companion-Token':'__TOKEN__'},body:JSON.stringify(data),signal});let v=await r.json();if(!r.ok)throw Error(v.error||'请求失败');return v}
@@ -55,7 +55,8 @@ function saveDraft(){
 }
 function hideComposer(){saveDraft().catch(()=>{});$('#compose').hidden=true;$('#input').blur();regions()}
 async function quitPet(){try{await saveDraft();native('quit')}catch(e){speak('草稿还没保存，稍后再试一次退出。','gentle')}}
-$('#close-compose').onclick=hideComposer;
+function dismissTransientUI(){if(!$('#compose').hidden)hideComposer();$('#menu').hidden=true;regions()}
+window.addEventListener?.('blur',dismissTransientUI);
 $('#input').addEventListener('compositionstart',()=>{imeActive=true});
 $('#input').addEventListener('compositionend',()=>{imeActive=false;imeEndedAt=Date.now()});
 $('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&YeliInput.composing(e,imeActive,imeEndedAt,Date.now()))imeEnterUntil=Date.now()+100});
@@ -70,7 +71,7 @@ document.addEventListener('keydown',e=>{
 function syncGameMode(){
  const enabled=!!state?.settings?.game_mode;
  $('#game-mode-toggle').textContent=enabled?'关闭游戏模式':'开启游戏模式';
- if(appliedGameMode!==enabled){native('gameMode',{enabled});appliedGameMode=enabled}
+ if(appliedGameMode!==enabled){native('gameMode',{enabled});appliedGameMode=enabled;if(typeof stopVoice==='function')stopVoice();if(enabled){clearInterval(typing);typing=null;clearTimeout(fold);$('#bubble').hidden=true;$('#dot').hidden=true;pending=null;$('#memory').hidden=true}}
 }
 async function toggleGameMode(){
  if(gameModeSaving||!state)return;gameModeSaving=true;
@@ -80,7 +81,7 @@ async function toggleGameMode(){
 $('#game-mode-toggle').onclick=toggleGameMode;
 async function refresh(){state=await api('state');$('#speaker-name').textContent=state.settings.name||'夜璃';$('#compose-name').textContent=state.settings.name||'夜璃';setScale(state.settings.scale||1);if(typeof reconcileRuntime==='function')reconcileRuntime();syncGameMode();if(typeof reconcileReminders==='function')reconcileReminders()}
 function setScale(v){
- scale=+v;const height=window.innerHeight||700,effective=Math.min(scale,Math.max(.3,(height-110)/280));
+ scale=+v;const height=window.innerHeight||700,effective=scale;
  pet.style.transform=`scale(${effective})`;
  const desired=100+280*effective+12,bottom=desired<=height-137?desired:Math.max(90,height-200);
  $('#bubble').style.bottom=bottom+'px';$('#reminder').style.bottom=bottom+'px';$('#dot').style.bottom=Math.min(100+280*effective+5,height-45)+'px';
@@ -98,7 +99,7 @@ function act(kind){pet.className=kind;setTimeout(()=>{if(!waiting)pet.className=
 function interacted(){if(typeof interruptReminder==='function')interruptReminder();if(typeof wakePet==='function')wakePet();last=Date.now();attempts=0;waiting=false;invitationGeneration++;persistSchedule().catch(()=>{});clearTimeout(inviteTimer);native('endPeek');pet.className=''}
 function finish(){if(typeof finishSpeechMotion==='function')finishSpeechMotion(replyEmotion);else if(typeof petMotion==='function'&&currentMotion==='talk')act(replyEmotion);clearInterval(typing);typing=null;$('#speech').textContent=full;if(!pending){clearTimeout(fold);fold=setTimeout(()=>{if(!$('#bubble').matches(':hover'))foldBubble();else $('#bubble').onmouseleave=foldBubble},Math.max(9000,full.length*100))}}
 function foldBubble(){if(pending)return;$('#bubble').hidden=true;$('#dot').hidden=false;regions()}
-function speak(text,emotion='idle',memory=null){if(typeof interruptReminder==='function')interruptReminder();clearTimeout(fold);clearInterval(typing);$('#bubble').onmouseleave=null;full=text;replyEmotion=emotion;pending=memory;$('#fold-reply').disabled=!!memory;$('#bubble-content').scrollTop=0;$('#speech').textContent='';$('#dot').hidden=true;$('#bubble').hidden=false;$('#memory').replaceChildren();$('#memory').hidden=!memory;if(memory){let caption=document.createElement('div');caption.className='memory-caption';caption.textContent='留在记忆里？';$('#memory').append(caption);let t=document.createElement('div');t.textContent=memory;$('#memory').append(t);for(const [label,save] of [['记住',true],['这次不记',false]]){let b=document.createElement('button');b.textContent=label;b.onclick=async e=>{e.stopPropagation();try{if(save)await api('memory',{content:memory});pending=null;$('#fold-reply').disabled=false;$('#memory').hidden=true;finish()}catch(e){b.textContent='未保存，点击重试'}};$('#memory').append(b)}}let i=0;typing=setInterval(()=>{i++;$('#speech').textContent=full.slice(0,i);if(i>=full.length)finish()},35);if(typeof beginSpeechMotion==='function')beginSpeechMotion();else if(typeof petMotion==='function'&&!['held','fall','land'].includes(currentMotion))petMotion('talk');regions()}
+function speak(text,emotion='idle',memory=null){if(state?.settings?.game_mode){if(typeof interruptReminder==='function')interruptReminder();clearTimeout(fold);clearInterval(typing);typing=null;full=text;replyEmotion=emotion;pending=null;$('#bubble').hidden=true;$('#dot').hidden=true;$('#memory').hidden=true;if(typeof beginSpeechMotion==='function')beginSpeechMotion();if(typeof playVoice==='function')playVoice(text,true);regions();return}if(typeof playVoice==='function'&&state?.settings?.voice_normal_chat)playVoice(text);if(typeof interruptReminder==='function')interruptReminder();clearTimeout(fold);clearInterval(typing);$('#bubble').onmouseleave=null;full=text;replyEmotion=emotion;pending=memory;$('#fold-reply').disabled=!!memory;$('#bubble-content').scrollTop=0;$('#speech').textContent='';$('#dot').hidden=true;$('#bubble').hidden=false;$('#memory').replaceChildren();$('#memory').hidden=!memory;if(memory){let caption=document.createElement('div');caption.className='memory-caption';caption.textContent='留在记忆里？';$('#memory').append(caption);let t=document.createElement('div');t.textContent=memory;$('#memory').append(t);for(const [label,save] of [['记住',true],['这次不记',false]]){let b=document.createElement('button');b.textContent=label;b.onclick=async e=>{e.stopPropagation();try{if(save)await api('memory',{content:memory});pending=null;$('#fold-reply').disabled=false;$('#memory').hidden=true;finish()}catch(e){b.textContent='未保存，点击重试'}};$('#memory').append(b)}}let i=0;typing=setInterval(()=>{i++;$('#speech').textContent=full.slice(0,i);if(i>=full.length)finish()},35);if(typeof beginSpeechMotion==='function')beginSpeechMotion();else if(typeof petMotion==='function'&&!['held','fall','land'].includes(currentMotion))petMotion('talk');regions()}
 $('#fold-reply').onclick=e=>{e.stopPropagation();if(pending)return;if(typing)finish();foldBubble()};
 $('#bubble').onclick=()=>{if(typing)finish()};$('#dot').onclick=()=>{interacted();$('#bubble').hidden=false;$('#dot').hidden=true;finish()};
 async function send(proactive=false){
@@ -113,7 +114,7 @@ async function send(proactive=false){
   if(!proactive)await saveDraft();
   const r=await api('chat',{content:text,proactive,request_id:request.id},request.controller.signal);
   if(request.cancelled)return;
-  if(!proactive){$('#input').value='';$('#draft-status').textContent=''}$('#compose').hidden=true;speak(r.answer,r.emotion,r.memory);await refresh();
+  if(!proactive){$('#input').value='';$('#draft-status').textContent=''}speak(r.answer,r.emotion,r.memory);await refresh();
  }catch(e){
   if(request.cancelled){speak('好，先停在这里。','gentle');if(!proactive)$('#compose').hidden=false}
   else{speak(e.message+' 可以保留原文再试一次。','gentle');if(!proactive)$('#compose').hidden=false}
@@ -128,10 +129,10 @@ $('#cancel').onclick=async()=>{
 $('#compose').onsubmit=e=>{e.preventDefault();if(Date.now()>=imeEnterUntil&&!YeliInput.composing(e,imeActive,imeEndedAt,Date.now()))send()};$('#input').oninput=()=>{inputTouched=true;last=Date.now();clearTimeout(draftTimer);draftTimer=setTimeout(()=>saveDraft().catch(()=>{}),300)};
 let down=null,moved=false;pet.onpointerdown=e=>{if(e.button!==0)return;pet.setPointerCapture(e.pointerId);down={pointerId:e.pointerId,x:e.screenX,y:e.screenY,local:(e.clientY-pet.getBoundingClientRect().top)/pet.getBoundingClientRect().height,xRatio:(e.clientX-pet.getBoundingClientRect().left)/pet.getBoundingClientRect().width};moved=false;native('dragStart')};pet.onpointermove=e=>{if(!down)return;if(Math.hypot(e.screenX-down.x,e.screenY-down.y)>5)moved=true;if(moved)native('drag')};pet.onpointerup=e=>{if(!down)return;const hit=down;down=null;if(moved){native('dragEnd');return}if(dock){native('reveal');setDock('')}let invited=waiting;interacted();$('#compose').hidden=false;$('#input').focus();act(hit.local<.55?(hit.xRatio>.68?'magic':'touch-head'):'touch-body');if(invited)send(true);regions()};pet.onpointercancel=()=>{down=null};pet.onkeydown=e=>{if(e.key==='Enter'){if(dock)native('reveal');setDock('');$('#compose').hidden=false;$('#input').focus()}};
 function menu(){interacted();if(dock){native('reveal');setDock('')}$('#menu').hidden=false;$('#menu').style.right='18px';$('#menu').style.bottom='100px';regions()}
-pet.oncontextmenu=e=>{e.preventDefault();menu()};$('#more').onclick=menu;document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('#quit').onclick=quitPet;document.addEventListener('pointerdown',e=>{if(!e.target.closest('#menu')&&!e.target.closest('#more'))$('#menu').hidden=true});
+pet.oncontextmenu=e=>{e.preventDefault();menu()};$('#more').onclick=()=>openPanel('settings');$('#hide-pet').onclick=()=>{dismissTransientUI();native('hide')};document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('#quit').onclick=quitPet;document.addEventListener('pointerdown',e=>{if(!e.target.closest('#compose')&&!e.target.closest('#pet')){if(!$('#compose').hidden)hideComposer()}if(!e.target.closest('#menu')&&!e.target.closest('#more'))$('#menu').hidden=true});
 function el(tag,text){let e=document.createElement(tag);if(text)e.textContent=text;return e}
 let panelGeneration=0;
-async function openPanel(tab){const generation=++panelGeneration;interacted();if(dock){native('reveal');setDock('')}$('#menu').hidden=true;await refresh();if(generation!==panelGeneration)return;const panel=$('#panel');panel.replaceChildren();panel.hidden=false;let close=el('button','关闭 ×');close.style.float='right';close.onclick=()=>{panelGeneration++;panel.hidden=true;regions()};panel.append(close,el('h2',({settings:'夜璃 · 设置',history:'聊天记录',memories:'长期记忆',runtime:'运行配置',wellbeing:'喝水、活动与游戏',skills:'技能管理',gamewatch:'游戏陪玩'})[tab]||'夜璃'));let nav=el('nav');for(const [key,label]of [['history','聊天'],['memories','记忆'],['settings','设置'],['runtime','运行'],['wellbeing','提醒'],['skills','技能'],['gamewatch','陪玩']]){let b=el('button',label);b.onclick=()=>openPanel(key);nav.append(b)}panel.append(nav);let error=el('small');error.className='error';
+async function openPanel(tab){const generation=++panelGeneration;interacted();if(!$('#compose').hidden)hideComposer();if(dock){native('reveal');setDock('')}$('#menu').hidden=true;await refresh();if(generation!==panelGeneration)return;const panel=$('#panel');panel.replaceChildren();panel.hidden=false;let close=el('button','关闭 ×');close.style.float='right';close.onclick=()=>{panelGeneration++;panel.hidden=true;regions()};panel.append(close,el('h2',({settings:'夜璃 · 设置',history:'聊天记录',memories:'长期记忆',runtime:'运行配置',wellbeing:'喝水与活动',skills:'技能管理',gamewatch:'游戏陪玩',voice:'声音'})[tab]||'夜璃'));let nav=el('nav');for(const [key,label]of [['history','聊天'],['memories','记忆'],['settings','设置'],['runtime','运行'],['wellbeing','提醒'],['skills','技能'],['gamewatch','陪玩'],['voice','声音']]){let b=el('button',label);b.onclick=()=>openPanel(key);nav.append(b)}panel.append(nav);let error=el('small');error.className='error';
 if(tab==='gamewatch'){try{await renderGameWatch(panel,error)}catch(e){error.textContent=e.message}}
 if(tab==='skills'){try{await renderSkills(panel,error)}catch(e){error.textContent=e.message}}
 if(tab==='settings'){
@@ -156,7 +157,7 @@ if(tab==='settings'){
  const save=el('button','保存设置');save.onclick=async()=>{save.disabled=true;try{const d={};for(const [k,i]of Object.entries(fields))d[k]=i.type==='checkbox'?i.checked:i.value;await api('settings',d);await refresh();interacted();error.textContent='已保存'}catch(e){error.textContent=e.message}finally{save.disabled=false}};panel.append(save);
  const exportButton=el('button','导出聊天与记忆');exportButton.onclick=async()=>{try{const data=JSON.stringify(await api('export'),null,2);if(window.webkit?.messageHandlers?.desktop){native('export',{content:data})}else{const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));const a=el('a');a.href=url;a.download='夜璃备份.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}}catch(e){error.textContent=e.message}};panel.append(exportButton,el('small','导出包含聊天、记忆和角色设置，不包含 API 密钥。密钥目前仅保存在本机数据库，未加密。'));
 }
-if(tab==='runtime'||tab==='wellbeing'){
+if(tab==='runtime'||tab==='wellbeing'||tab==='voice'){
  const runtime=await api('runtime');if(generation!==panelGeneration||panel.hidden)return;
  panel.append(el('small','这里配置夜璃自身的运行行为。保存后立即生效，不包含模型和外观参数。'));
  if(runtime.error||scheduleError){const warning=el('small',runtime.error||scheduleError);warning.className='error';panel.append(warning)}
@@ -172,7 +173,7 @@ if(tab==='runtime'||tab==='wellbeing'){
   }catch(e){error.textContent=e.message}finally{runtimeBusy=false}
  };
  for(const [group,label]of Object.entries(runtime.groups)){
-  if(tab==='wellbeing'&&!['reminders','gaming'].includes(group))continue;
+  if(!YeliInput.settingsGroupVisible(tab,group))continue;
   panel.append(el('h3',label));
   for(const [key,spec]of Object.entries(runtime.fields)){
    if(spec.group!==group)continue;
@@ -183,11 +184,12 @@ if(tab==='runtime'||tab==='wellbeing'){
   const reset=el('button','恢复'+label+'默认值');reset.onclick=()=>perform('reset',{group});panel.append(reset);
  }
  if(tab==='runtime')panel.append(el('small','无回应的重试至少间隔 2 小时，最多两次。安静时段开始与结束相同表示不设安静时段。延续计时会计入应用关闭期间的时间；用户再次互动后重置尝试次数。关闭记忆建议不会删除已有记忆。'));
- const validate=el('button','校验配置'),save=el('button','保存运行配置'),reload=el('button','重新载入配置文件');
- validate.onclick=()=>perform('validate',{config:read()});save.onclick=()=>perform('apply',{config:read()});reload.onclick=()=>perform('reload');panel.append(validate,save,reload);
+ const validate=el('button','校验配置'),save=el('button',tab==='voice'?'保存声音设置':tab==='wellbeing'?'保存提醒设置':'保存运行配置'),reload=el('button','重新载入配置文件');
+ validate.onclick=()=>perform('validate',{config:read()});save.onclick=()=>perform('apply',{config:read()});reload.onclick=()=>perform('reload');if(tab==='runtime')panel.append(validate,save,reload);else panel.append(save);
+ if(tab==='voice'){const test=el('button','试听声音');test.onclick=()=>{if(typeof playVoice==='function')playVoice('哥哥，我在这里。接下来让我陪你一起玩吧。',true)};const status=el('small');status.id='voice-status';status.textContent=typeof voiceStatusText==='undefined'?'使用系统中文声音':voiceStatusText;panel.append(test,status,el('small','游戏模式始终朗读回复并隐藏气泡；平时可选择是否也朗读。没有中文声音时，请在 Windows 语言设置中安装中文语音包。'));}
  if(tab==='wellbeing'){
-  panel.append(el('small','提醒沿用安静时段，睡眠与电脑重启不会清除计时。游戏模式开启后仍会提醒；正在聊天或操作时会延后，两类提醒至少相隔 5 分钟。'));
-  const water=el('button','测试喝水提醒'),move=el('button','测试活动提醒');water.onclick=()=>{if(!previewReminder('water'))error.textContent='请先结束当前回复或提醒再测试。'};move.onclick=()=>{if(!previewReminder('move'))error.textContent='请先结束当前回复或提醒再测试。'};panel.append(water,move,el('small','测试提醒不改变正式计时。游戏模式提高桌面窗口层级，关闭后恢复普通置顶；其他全屏软件的覆盖效果需要实际验证。'));
+  panel.append(el('small','提醒沿用安静时段，睡眠与电脑重启不会清除计时。游戏模式开启后改用语音提醒；正在聊天或操作时会延后，两类提醒至少相隔 5 分钟。'));
+  const water=el('button','测试喝水提醒'),move=el('button','测试活动提醒');water.onclick=()=>{if(!previewReminder('water'))error.textContent='请先结束当前回复或提醒再测试。'};move.onclick=()=>{if(!previewReminder('move'))error.textContent='请先结束当前回复或提醒再测试。'};panel.append(water,move,el('small','测试提醒不改变正式计时。'));
  }
  if(tab==='runtime'){
  panel.append(el('h3','状态规则'),el('small','拖动优先；松手后先下落、再落地。回复在此期间继续接收，落地后恢复说话或回应。正在聊天或操作面板时不触发自动行为；日常行为不能覆盖聊天。用户互动可以唤醒睡眠。这些规则固定在程序中，避免配置互相冲突。'));
@@ -203,7 +205,7 @@ if(tab==='runtime'||tab==='wellbeing'){
  panel.append(createBackup,backupList,previewBackup,previewText,restoreBackup,backupStatus,el('small','自动备份仅在夜璃运行时执行，最多一分钟内检查一次。备份排除 API 密钥字段和草稿，恢复入口只恢复聊天与记忆。'));
  refreshBackups().catch(e=>{backupStatus.textContent=e.message});
  }
- panel.append(el('small','配置文件：'+runtime.path+'。手动修改后点击「重新载入配置文件」。无效配置不会覆盖正在运行的有效配置；启动时可回退到上次有效版本。'));
+ if(tab==='runtime')panel.append(el('small','配置文件：'+runtime.path+'。手动修改后点击「重新载入配置文件」。无效配置不会覆盖正在运行的有效配置；启动时可回退到上次有效版本。'));
 }
 if(tab==='history'){
  const search=el('input');search.placeholder='搜索聊天内容';search.setAttribute('aria-label','搜索聊天');const searchButton=el('button','搜索');const list=el('div');const older=el('button','加载更早的聊天');let before=null,query='',loading=false;
@@ -212,7 +214,7 @@ if(tab==='history'){
  const clear=el('button','清空聊天');let armed=false;clear.onclick=async()=>{if(!armed){armed=true;clear.textContent='再次点击确认清空';return}try{await api('clear');openPanel('history')}catch(e){error.textContent=e.message}};panel.append(clear);
 }
 if(tab==='memories'){panel.append(el('small','只有确认后才保存。清空某条内容后保存即可删除。'));for(const m of state.memories){let t=el('textarea');t.value=m.content;let b=el('button','保存修改');b.onclick=async()=>{try{await api('memory',{id:m.id,content:t.value});openPanel('memories')}catch(e){error.textContent=e.message}};panel.append(t,b)}let t=el('textarea');t.placeholder='手动添加一条记忆';let b=el('button','添加');b.onclick=async()=>{try{await api('memory',{content:t.value});openPanel('memories')}catch(e){error.textContent=e.message}};panel.append(t,b)}panel.append(error);regions()}
-function invitationBlocked(){return activeReminder||busy||waiting||pending||down||typing||!$('#panel').hidden||!$('#compose').hidden||['held','fall','land'].includes(typeof currentMotion==='undefined'?'idle':currentMotion)||(state?.settings?.invite_wakes_sleep===false&&typeof currentMotion!=='undefined'&&currentMotion==='sleep')}
+function invitationBlocked(){return (typeof voiceSpeaking!=='undefined'&&voiceSpeaking)||activeReminder||busy||waiting||pending||down||typing||!$('#panel').hidden||!$('#compose').hidden||['held','fall','land'].includes(typeof currentMotion==='undefined'?'idle':currentMotion)||(state?.settings?.invite_wakes_sleep===false&&typeof currentMotion!=='undefined'&&currentMotion==='sleep')}
 async function checkInvitation(){
  if(!state||invitationSaving)return;
  if(!YeliBehavior.invitationDue({settings:state.settings,now:Date.now(),hour:new Date().getHours(),last,lastWave,attempts,blocked:invitationBlocked()}))return;

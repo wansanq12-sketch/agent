@@ -1,6 +1,6 @@
 let reminderPolling=false,reminderReturnDot=false;
 function reminderBlocked(){
- return document.hidden||busy||waiting||pending||typing||down||!$('#panel').hidden||!$('#menu').hidden||!$('#compose').hidden||!$('#bubble').hidden||['held','fall','land'].includes(currentMotion);
+ return (typeof voiceSpeaking!=='undefined'&&voiceSpeaking)||document.hidden||busy||waiting||pending||typing||down||!$('#panel').hidden||!$('#menu').hidden||!$('#compose').hidden||!$('#bubble').hidden||['held','fall','land'].includes(currentMotion);
 }
 function hideReminder(){clearTimeout(reminderTimer);activeReminder=null;$('#reminder').hidden=true;if(reminderReturnDot&&$('#bubble').hidden)$('#dot').hidden=false;reminderReturnDot=false;regions()}
 function interruptReminder(){const reminder=activeReminder;if(!reminder)return;hideReminder();if(!reminder.preview)api('reminders',{action:'snooze',id:reminder.id}).catch(()=>{})}
@@ -13,6 +13,7 @@ function showReminder(reminder){
  $('#reminder-text').textContent=water?'哥哥，停一小会儿，喝两口水吧。':'哥哥，起来走走、活动一下吧，陪你歇一会儿。';
  $('#reminder-done').textContent=water?'喝过了':'活动过了';$('#reminder-error').textContent='';
  if(dock){native('reveal');setDock('')}
+ if(state?.settings?.game_mode){if(typeof playVoice==='function')playVoice($('#reminder-text').textContent,true);reminderTimer=setTimeout(hideReminder,Math.max(0,reminder.expires_at-Date.now()));regions();return true}
  $('#reminder').hidden=false;
  if(typeof petMotion==='function')petMotion(water?'gentle':'stretch',null,'interaction');
  reminderTimer=setTimeout(hideReminder,Math.max(0,reminder.expires_at-Date.now()));regions();return true;

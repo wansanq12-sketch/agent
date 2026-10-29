@@ -25,12 +25,15 @@ FIELDS = {
     'move_reminder_enabled': dict(type='bool', default=True, group='reminders', label='开启活动提醒'),
     'move_reminder_interval': dict(type='int', default=60, min=10, max=240, group='reminders', label='活动提醒间隔（分钟）'),
     'game_mode': dict(type='bool', default=False, group='gaming', label='开启游戏模式（高层置顶）'),
+    'voice_normal_chat': dict(type='bool', default=False, group='voice', label='平时聊天也朗读回复'),
+    'voice_rate': dict(type='int', default=100, min=60, max=160, group='voice', label='语音速度（100 为正常）'),
+    'voice_volume': dict(type='int', default=80, min=0, max=100, group='voice', label='语音音量'),
     'backup_enabled': dict(type='bool', default=True, group='backup', label='开启自动备份'),
     'backup_interval_hours': dict(type='int', default=24, min=1, max=168, group='backup', label='自动备份间隔（小时）'),
     'backup_keep': dict(type='int', default=7, min=2, max=90, group='backup', label='保留备份份数'),
 }
 DEFAULTS = {'version': 1, **{key: spec['default'] for key, spec in FIELDS.items()}}
-GROUPS = dict(proactive='主动关心', sleep='睡眠', daily='日常行为', memory='记忆建议', reminders='喝水与活动', gaming='游戏模式', backup='数据备份')
+GROUPS = dict(proactive='主动关心', sleep='睡眠', daily='日常行为', memory='记忆建议', reminders='喝水与活动', gaming='游戏模式', voice='声音', backup='数据备份')
 
 def validate(document):
     if not isinstance(document, dict):

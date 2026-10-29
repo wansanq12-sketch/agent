@@ -3,12 +3,13 @@ async function pollGameWatch(){
  if(watchPolling)return;watchPolling=true;
  try{const status=await api('game-watch');
   const label=document.querySelector('#watch-status');if(label)label.textContent=status.status+' · 本小时 '+status.requests_hour_count+' 次请求'+(status.error?'\n'+status.error:'');
-  if(status.enabled&&status.latest&&status.latest.id!==watchLatestId&&!busy&&!typing&&!down&&!waiting&&!activeReminder&&$('#panel').hidden&&$('#compose').hidden&&$('#menu').hidden){watchLatestId=status.latest.id;if(dock){native('reveal');setDock('')}speak(status.latest.reply,'gentle')}
+  if(status.enabled&&status.latest&&status.latest.id!==watchLatestId&&!busy&&!typing&&!(typeof voiceSpeaking!=='undefined'&&voiceSpeaking)&&!down&&!waiting&&!activeReminder&&$('#panel').hidden&&$('#compose').hidden&&$('#menu').hidden){watchLatestId=status.latest.id;if(dock){native('reveal');setDock('')}speak(status.latest.reply,'gentle')}
  }catch{}finally{watchPolling=false}
 }
 setInterval(pollGameWatch,3000);
 async function renderGameWatch(panel,error){
  const initial=await api('game-watch');
+ const gameToggle=el('input');gameToggle.type='checkbox';gameToggle.checked=!!state.settings.game_mode;gameToggle.onchange=async()=>{try{await toggleGameMode()}finally{gameToggle.checked=!!state.settings.game_mode}};panel.append(el('label','游戏模式：窗口置顶，语音回复，不显示气泡'),gameToggle);
  panel.append(el('small','Windows 游戏陪玩：开启后等待指定游戏进入前台，本地识别决策界面；只有触发建议时才发送游戏画面、识别文字和所选技能给你配置的 AI。切换到其他软件或最小化游戏会暂停采集。请使用支持图片输入的模型；画面不写入磁盘。'));
  const label=el('small');label.id='watch-status';label.style.whiteSpace='pre-wrap';label.textContent=initial.status+(initial.error?'\n'+initial.error:'');panel.append(label);
  if(!initial.supported)panel.append(el('small','当前电脑不是 Windows。可以先配置和导入技能，屏幕观察需要在 Windows 运行。'));

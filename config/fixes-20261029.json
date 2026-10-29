@@ -1,0 +1,59 @@
+{
+  "revision": "2026-10-29-interaction-voice",
+  "items": [
+    {
+      "id": 1,
+      "reported": "点击其他区域输入框不收起",
+      "implemented": "移除输入框关闭按钮；页面外部点击、窗口外点击和失去焦点时保存草稿并收起",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 2,
+      "reported": "回车发送后输入框自动关闭",
+      "implemented": "发送成功只清空已发送文字，保留输入框",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 3,
+      "reported": "下落过慢",
+      "implemented": "物理下落与动作均从 1.5 秒改为 0.75 秒",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 4,
+      "reported": "设置内容重复",
+      "implemented": "运行、提醒、声音各自只显示所属分组；游戏模式归陪玩页",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 5,
+      "reported": "右键菜单太长",
+      "implemented": "保留设置、隐藏、游戏模式、退出四项；隐藏后托盘可显示",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 6,
+      "reported": "希望浅色配色",
+      "implemented": "聊天、设置、菜单、提醒统一为浅蓝与白色",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 7,
+      "reported": "落地像卡帧",
+      "implemented": "预加载动作，加载期间保留上一帧；切换使用短过渡，动作加载后才开始计时",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 8,
+      "reported": "拖动时人物变小",
+      "implemented": "取消宽度导致的整体缩小，统一显示高度与设置缩放",
+      "status": "implemented; Windows runtime verification pending"
+    },
+    {
+      "id": 9,
+      "reported": "游戏模式改为声音输出",
+      "implemented": "接入系统中文语音，提供试听、语速和音量；游戏模式隐藏气泡并播报回复与提醒",
+      "status": "implemented; Windows runtime verification pending"
+    }
+  ]
+}

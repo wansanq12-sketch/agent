@@ -19,6 +19,9 @@
   "move_reminder_enabled": true,
   "move_reminder_interval": 60,
   "game_mode": false,
+  "voice_normal_chat": false,
+  "voice_rate": 100,
+  "voice_volume": 80,
   "backup_enabled": true,
   "backup_interval_hours": 24,
   "backup_keep": 7

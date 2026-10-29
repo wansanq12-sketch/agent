@@ -1,4 +1,4 @@
-const motionCanvas=document.createElement('canvas');motionCanvas.id='motion-canvas';motionCanvas.width=400;motionCanvas.height=560;
+const motionCanvas=document.createElement('canvas');motionCanvas.id='motion-canvas';motionCanvas.width=640;motionCanvas.height=560;
 motionCanvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none';pet.append(motionCanvas);
 const manifest=window.YeliSprites,motionNames=Object.keys(manifest.actions),FRAME_COUNT=Math.max(...Object.values(manifest.actions).map(a=>a.frames.length));
 const player=new YeliFramePlayer.SpritePlayer(motionCanvas,manifest,'/assets/actions/');
@@ -7,7 +7,7 @@ let renderTimer=null;const pendingLoads=new Set();
 function ensureMotion(name){
  if(player.cache?.[name]||pendingLoads.has(name))return;
  pendingLoads.add(name);
- player.load(name).then(()=>{pendingLoads.delete(name);if(currentMotion===name){$('#reload-motion').hidden=true;renderMotion(performance.now())}}).catch(()=>{pendingLoads.delete(name);if(currentMotion===name){$('#reload-motion').hidden=false;if(typeof regions==='function')regions()}});
+ player.load(name).then(()=>{pendingLoads.delete(name);if(currentMotion===name){motionStarted=performance.now();scheduleMotionReturn();$('#reload-motion').hidden=true;renderMotion(performance.now())}}).catch(()=>{pendingLoads.delete(name);if(currentMotion===name){$('#reload-motion').hidden=false;if(typeof regions==='function')regions()}});
 }
 $('#reload-motion').onclick=()=>{ensureMotion(currentMotion)};
 function currentPetMask(){return motionCanvas.hidden?null:player.hitMask()}
@@ -22,15 +22,18 @@ function petMotion(name,durationOverride,reason='event'){
  if(currentMotion===name&&['held','fall','sleep'].includes(name))return;
  clearTimeout(motionReturn);const generation=++motionGeneration;currentMotion=name;motionStarted=performance.now();motionDuration=Number.isFinite(durationOverride)&&durationOverride>0?durationOverride:null;
  $('#reload-motion').hidden=true;ensureMotion(name);renderMotion(performance.now());
- if(!['idle','held','fall','sleep','talk'].includes(name)){
-  const duration=['read','music','game'].includes(name)?12000:(motionDuration||manifest.actions[name].durationMs);
-  motionReturn=setTimeout(()=>{if(generation===motionGeneration)resumeMotion()},duration);
- }
+ scheduleMotionReturn();
 }
+function scheduleMotionReturn(){
+ clearTimeout(motionReturn);if(pendingLoads.has(currentMotion)||['idle','held','fall','sleep','talk'].includes(currentMotion))return;
+ const generation=motionGeneration,name=currentMotion,duration=['read','music','game'].includes(name)?12000:(motionDuration||manifest.actions[name].durationMs);
+ motionReturn=setTimeout(()=>{if(generation===motionGeneration)resumeMotion()},duration);
+}
+
 function beginSpeechMotion(){deferredEmotion=null;petMotion('talk')}
 function finishSpeechMotion(emotion){if(['held','fall','land'].includes(currentMotion)){deferredEmotion=emotion;return}act(emotion,'complete')}
 function resumeMotion(){
- if(typing){petMotion('talk',null,'complete');return}
+ if(typing||(typeof voiceSpeaking!=='undefined'&&voiceSpeaking)){petMotion('talk',null,'complete');return}
  if(deferredEmotion){const emotion=deferredEmotion;deferredEmotion=null;act(emotion,'complete');return}
  petMotion(busy?'think':'idle',null,'complete');
 }
@@ -41,18 +44,19 @@ function reconcileRuntime(){
 function wakePet(){lastPetActivity=Date.now();if(currentMotion==='sleep')petMotion('idle',null,'wake')}
 
 function sleepAfterMs(){return Math.max(1,Number(state?.settings?.sleep_after||10))*60000}
-function maySleep(){return !(typeof activeReminder!=='undefined'&&activeReminder)&&!busy&&!waiting&&!pending&&!down&&$('#panel').hidden&&$('#compose').hidden&&!typing}
+function maySleep(){return !(typeof voiceSpeaking!=='undefined'&&voiceSpeaking)&&!(typeof activeReminder!=='undefined'&&activeReminder)&&!busy&&!waiting&&!pending&&!down&&$('#panel').hidden&&$('#compose').hidden&&!typing}
 function renderMotion(now){
  clearTimeout(renderTimer);if(document.hidden)return;
  const elapsed=Math.max(0,now-motionStarted);motionFrame=frameAt(currentMotion,elapsed);
  const drawn=player.draw(currentMotion,elapsed,motionDuration);
- motionCanvas.hidden=!drawn;$('#portrait').hidden=drawn;
+ if(drawn){motionCanvas.hidden=false;$('#portrait').hidden=true}else if(!player.lastDraw){motionCanvas.hidden=true;$('#portrait').hidden=false}
  if(typeof regions==='function')regions();
- const delay=YeliFramePlayer.nextFrameDelay(manifest.actions[currentMotion],elapsed,motionDuration);
+ const boundary=YeliFramePlayer.nextFrameDelay(manifest.actions[currentMotion],elapsed,motionDuration);
+ const delay=player.blending?Math.min(16,boundary):boundary;
  if(Number.isFinite(delay))renderTimer=setTimeout(()=>renderMotion(performance.now()),Math.ceil(delay));
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(renderTimer);else renderMotion(performance.now())});
-ensureMotion('idle');renderMotion(performance.now());
+ensureMotion('idle');ensureMotion('held');ensureMotion('fall');ensureMotion('land');renderMotion(performance.now());
 const baseAct=act;act=function(kind,reason='event'){baseAct(kind);if(['held','fall'].includes(currentMotion))return;petMotion({'happy':'wave','touch-head':'hair','touch-body':'gentle','think':'think','magic':'magic','gentle':'gentle','idle':'idle','talk':'talk'}[kind]||'idle',null,kind.startsWith('touch-')?'interaction':reason)};
 const previousDown=pet.onpointerdown;pet.onpointerdown=e=>{wakePet();previousDown(e)};
 const previousMove=pet.onpointermove;pet.onpointermove=e=>{previousMove(e);if(down&&moved){if(!down.interactedDrag){down.interactedDrag=true;if(typeof interacted==='function')interacted()}wakePet();petMotion('held')}};

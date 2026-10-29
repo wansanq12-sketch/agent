@@ -51,3 +51,32 @@
 #reminder-snooze{background:#40526e;color:#dce7f7}
 #reminder-error{margin:7px 0 0;color:#e9bbbd;font-size:11px}#reminder-error:empty{display:none}
 .docked #reminder{display:none!important}
+/* Soft daylight palette shared by chat, settings and reminders. */
+:root{--chat-ink:#34445e;--chat-muted:#7b8ba5;--chat-line:#dce5f1;--chat-surface:#f6f9fd}
+#pet{left:80px;width:320px;bottom:100px}
+.docked #pet{left:110px}.docked.right #pet{left:0}
+#bubble,#compose{background:linear-gradient(145deg,#fffffffa,#edf4fffa);border-color:#dce6f4;color:#34445e;box-shadow:0 10px 30px #4e70951a,inset 0 1px 0 #fff}
+#bubble::after{background:#f0f6ff;border-color:#dce6f4}
+.speech-header,.compose-header{color:#587397}.moon-mark{background:#e5eefc;color:#7899c6}.speech-caption,#draft-status{color:#8797af}
+#fold-reply,#more{color:#8297b6}#fold-reply:hover,#more:hover{color:#46658f;background:#e6eef9}
+#compose:focus-within{border-color:#a6c4ed;box-shadow:0 8px 24px #4e709517,0 0 0 3px #dbe9fb80}
+#input{color:#34445e}#input::placeholder{color:#9ba9bd}#input[readonly]{color:#8797af}
+#send{background:linear-gradient(145deg,#cfe0ff,#bdcdf1);color:#45618f;box-shadow:inset 0 1px 0 #ffffffb3}
+#cancel,#memory button{color:#6b7f9d;background:#e9eff9;border-color:#d8e3f3}
+#memory{background:#f2f6fd;border-color:#dae6f5;color:#5f7495}.memory-caption{color:#8a9fc0}#memory button:first-of-type{background:#ccddf6;color:#4d688f}
+#dot{background:#f5f9ff;color:#7c97c0;border-color:#dce6f4;box-shadow:0 4px 12px #7897b51a}#dot:hover{background:#e8f0fc}
+#panel{background:linear-gradient(155deg,#fbfdfffc,#edf3fbfc);border-color:#dae5f3;color:#34445e;box-shadow:0 12px 40px #47658a1c;padding:20px}
+#panel h2{font-size:19px;color:#3d5373;margin:8px 0 18px}#panel h3{font-size:14px;font-weight:600;color:#607da3;margin:22px 0 10px}
+#panel nav{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:13px;border-bottom:1px solid #e0e8f3;margin-bottom:18px}
+#panel label{font-size:12px;color:#6e83a2;line-height:1.7;margin-top:17px}#panel small{color:#8a98ae;line-height:1.8}
+#panel input,#panel textarea,#panel select{background:#ffffffde;color:#3d5373;border:1px solid #dbe5f1;box-shadow:0 2px 5px #718bac06;padding:10px 12px;border-radius:11px;outline:none}
+#panel input:focus,#panel textarea:focus,#panel select:focus{border-color:#a8c3e9;box-shadow:0 0 0 3px #dfeafa80}
+#panel input[type=checkbox]{accent-color:#9ab6dd;width:16px;height:16px;cursor:pointer}#panel input[type=range]{padding:0;accent-color:#a0bae1;box-shadow:none}
+#panel button,#menu button{background:#e8effa;color:#627eaa;border:1px solid #dce6f4;border-radius:10px;box-shadow:inset 0 1px 0 #fff8;padding:8px 12px;margin:3px 3px 3px 0;font-size:12px}
+#panel button:hover,#menu button:hover{background:#dce8f9;color:#436594}#panel nav button{border:0;padding:7px 10px;margin:0;background:#eaf1fb}
+#panel section{border-color:#dbe5f2!important;background:#ffffff6b}.error,#panel .error{color:#c47881}
+#menu{background:#f8fbfff7;border-color:#dbe6f5;box-shadow:0 8px 24px #56729a1a;padding:7px;min-width:125px}#menu button{background:transparent;border-color:transparent;margin:0;text-align:left}
+.message{background:#e7effa;color:#526c91}.message.user{background:#dce9f9;color:#526c91}
+#reminder{background:linear-gradient(145deg,#fffffffc,#edf5fffc);color:#526d93;border-color:#d9e6f5;box-shadow:0 10px 28px #5c7c9e18}.reminder-header{color:#839cbc}#reminder-skip{color:#93a4ba}.reminder-actions button{background:#d4e3f8;color:#57739a}#reminder-snooze{background:#e7effa;color:#7a90af}#reminder-error{color:#c47881}
+#panel input[type=range]{appearance:none;-webkit-appearance:none;height:6px;background:#dfe9f7;border:0;border-radius:8px;margin:13px 0 8px;cursor:pointer}
+#panel input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:#a5bfe3;border:3px solid #f8fbff;box-shadow:0 2px 6px #7b9cc336}

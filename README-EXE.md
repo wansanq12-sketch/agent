@@ -29,3 +29,7 @@ python -m PyInstaller --noconfirm --clean Yeli-Windows.spec
 方式二：把不含个人数据的源码放到你自己的 GitHub 仓库，包含 `.github/workflows/windows-exe.yml`。在 Actions → Build Windows EXE → Run workflow 手动启动。构建成功后下载 Yeli-Windows-EXE artifact。此流程只读仓库、生成构建产物，不自动发布或部署。
 
 自动检查会实际运行打包后的 EXE，验证内置 OCR 原生库/模型、人物图片和本机 API，不会读取或发送你的屏幕。它不等同于真人游戏与桌面交互测试。未经运行成功，不应把构建配置当作已交付的 EXE。
+
+## 交互与声音更新
+
+输入框发送后保持打开，点击外部收起。右键精简为设置、隐藏、游戏模式和退出；隐藏后通过托盘显示。声音设置位于设置面板的声音页，游戏模式使用系统中文语音并隐藏回复气泡。Windows 需已安装中文语音包，可以先试听；没有可用声音时设置页会显示原因，不额外调用语音 API。更新只替换 EXE，保留用户数据目录。

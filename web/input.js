@@ -8,5 +8,6 @@ class DraftQueue{
  constructor(save){this.save=save;this.tail=Promise.resolve()}
  write(text){const task=this.tail.catch(()=>{}).then(()=>this.save(text));this.tail=task;return task}
 }
-const api={composing,DraftQueue};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.YeliInput=api;
+function settingsGroupVisible(tab,group){return tab==='wellbeing'?group==='reminders':tab==='voice'?group==='voice':tab==='runtime'&&!['reminders','gaming','voice'].includes(group)}
+const api={composing,DraftQueue,settingsGroupVisible};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.YeliInput=api;
 })(typeof window!=='undefined'?window:globalThis);

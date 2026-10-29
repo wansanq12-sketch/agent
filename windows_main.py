@@ -22,6 +22,8 @@ def self_test(output):
     try:
         if sys.platform!='win32':raise RuntimeError('EXE self-test requires Windows')
         from PySide6.QtWebEngineWidgets import QWebEngineView
+        from PySide6.QtTextToSpeech import QTextToSpeech
+        report['speech_module']='QtTextToSpeech imported'
         from PIL import Image
         import psutil
         import numpy as np

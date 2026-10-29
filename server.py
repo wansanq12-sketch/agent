@@ -129,7 +129,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'image/png')
             self.end_headers()
             self.wfile.write(body)
-        elif self.path in ('/motion.js', '/sprites.js', '/frame-player.js', '/behavior.js', '/input.js', '/wellbeing.js', '/skills.js', '/game-watch.js'):
+        elif self.path in ('/motion.js', '/sprites.js', '/frame-player.js', '/behavior.js', '/input.js', '/wellbeing.js', '/skills.js', '/game-watch.js', '/speech.js'):
             body = (ROOT / 'web' / self.path[1:]).read_bytes()
             self.send_response(200)
             self.send_header('Content-Type', 'text/javascript; charset=utf-8')
@@ -349,7 +349,7 @@ class Handler(BaseHTTPRequestHandler):
                     system += SKILLS.context()
                     prompt = '请发起一句简短、轻松、无压力的关心。不要假装知道用户当前在做什么，不要要求回复。' if proactive else content
                     system += '\n只输出JSON对象，格式为 {"reply":"回复文字","emotion":"idle或happy或think或gentle或magic","memory":null}。如果用户明确透露值得长期记住的自身偏好或事实，可将memory设为一句简短的拟保存事实；不要记录角色剧情或猜测，不要声称已经保存。用户会另行确认。'
-                    if not s['memory_suggestions']:
+                    if not s['memory_suggestions'] or s['game_mode']:
                         system += '\n用户已关闭记忆建议，memory 必须为 null。'
                     answer = completion(s, [dict(role='system', content=system)] + history + [dict(role='user', content=prompt)])
                     emotion, candidate = 'idle', None

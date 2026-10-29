@@ -50,14 +50,14 @@ function footprint(meta,scale,width,height){
  return {cols,rows,bits};
 }
 class SpritePlayer{
- constructor(canvas,manifest,base){this.canvas=canvas;this.manifest=manifest;this.base=base;this.cache={};this.loading={};this.lastDraw=null;this.clock=0;this.changed=false}
+ constructor(canvas,manifest,base){this.canvas=canvas;this.manifest=manifest;this.base=base;this.cache={};this.loading={};this.lastDraw=null;this.clock=0;this.changed=false;this.blend=null;this.blending=false}
  load(name){
   if(this.loading[name])return this.loading[name];
   const action=this.manifest.actions[name];
   this.loading[name]=new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{try{
    const unique=new Map();const frames=action.frames.map(f=>{const key=JSON.stringify([f.x,f.y,f.w,f.h,f.color]);if(!unique.has(key))unique.set(key,isolate(im,f));return unique.get(key)});
    const left=Math.max(...action.frames.map(f=>f.anchorX||f.w/2)),right=Math.max(...action.frames.map(f=>f.w-(f.anchorX||f.w/2)));
-   this.cache[name]={frames,masks:{},used:++this.clock,scale:Math.min(390/(left+right),540/Math.max(...action.frames.map(f=>f.h)))};
+   this.cache[name]={frames,masks:{},used:++this.clock,scale:540/Math.max(...action.frames.map(f=>f.h))};
    // Keep at most four decoded actions; always retain the one currently displayed.
    const candidates=Object.keys(this.cache).filter(key=>key!==name&&key!==this.lastDraw?.name).sort((a,b)=>this.cache[a].used-this.cache[b].used);
    while(Object.keys(this.cache).length>4&&candidates.length){const key=candidates.shift();delete this.cache[key];delete this.loading[key]}
@@ -71,10 +71,16 @@ class SpritePlayer{
   const action=this.manifest.actions[name],entry=this.cache[name];if(!action||!entry)return false;
   const index=Number.isInteger(forcedFrame)?Math.max(0,Math.min(action.frames.length-1,forcedFrame)):frameAt(action,elapsed,durationOverride),meta=action.frames[index],frame=entry.frames[index],s=entry.scale,ctx=this.canvas.getContext('2d');
   entry.used=++this.clock;
-  if(this.lastDraw?.name===name&&this.lastDraw.index===index&&this.lastDraw.width===this.canvas.width&&this.lastDraw.height===this.canvas.height)return true;
-  ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+  if(this.lastDraw?.name===name&&this.lastDraw.index===index&&this.lastDraw.width===this.canvas.width&&this.lastDraw.height===this.canvas.height&&!this.blend)return true;
+  const now=typeof performance!=='undefined'?performance.now():Date.now();
+  if(this.lastDraw&&this.lastDraw.name!==name&&typeof document!=='undefined'&&typeof ctx.globalAlpha==='number'){const image=document.createElement('canvas');image.width=this.canvas.width;image.height=this.canvas.height;image.getContext('2d').drawImage(this.canvas,0,0);this.blend={image,started:now}}
+  const mix=this.blend?Math.min(1,(now-this.blend.started)/140):1;this.blending=mix<1;
+  if(this.blend&&mix<1){ctx.clearRect(0,0,this.canvas.width,this.canvas.height);ctx.globalAlpha=1-mix;ctx.drawImage(this.blend.image,0,0)}else{this.blend=null;ctx.clearRect(0,0,this.canvas.width,this.canvas.height)}
+  ctx.globalAlpha=mix;
+  if(this.blending)ctx.globalCompositeOperation='lighter';
   // Anchor the face horizontally and the character baseline vertically. No sway or rotation.
   ctx.drawImage(frame,this.canvas.width/2-(meta.anchorX||meta.w/2)*s,this.canvas.height-5-meta.h*s,meta.w*s,meta.h*s);
+  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
   this.lastDraw={name,index,width:this.canvas.width,height:this.canvas.height};this.changed=true;
   return true;
  }
