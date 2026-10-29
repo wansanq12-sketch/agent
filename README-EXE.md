@@ -3,7 +3,7 @@
 ## 安装和更新
 
 1. 在 GitHub Actions 的 **Build Windows Installer** 构建完成后，下载 **Yeli-Windows-Installer**。
-2. 下载内容中的 `Yeli-Setup-1.1.1-x64.exe` 是安装程序。双击安装，不需要安装 Python。
+2. 下载内容中的 `Yeli-Setup-1.1.2-x64.exe` 是安装程序。双击安装，不需要安装 Python。
 3. 安装后从开始菜单「夜璃」启动，也可以在安装时选择创建桌面快捷方式。
 4. 后续下载新版本的 `Yeli-Setup-版本号-x64.exe` 直接覆盖安装，无需先卸载；安装器沿用原安装目录。更新时请先退出夜璃。
 5. 程序默认安装到 `%LOCALAPPDATA%\Programs\Yeli`。Windows「已安装的应用」中可查看版本和卸载。
@@ -36,7 +36,7 @@ AI 聊天仍使用你配置的 API，游戏陪玩需支持图片输入的模型�
 python -m pip install -r requirements-windows.txt "pyinstaller>=6.17,<7"
 python tools/windows_version.py
 python -m PyInstaller --noconfirm --clean Yeli-Windows.spec
-ISCC.exe /DAppVersion=1.1.1 installer/Yeli.iss
+ISCC.exe /DAppVersion=1.1.2 installer/Yeli.iss
 ```
 
 构建必须在 Windows 上进行。GitHub Actions 会构建安装器，测试旧版安装 → 新版覆盖安装 → 卸载，校验用户数据不变，并运行安装后的 EXE 检查内置 OCR、素材与本机 API。检查不读取或发送真实屏幕。
@@ -44,3 +44,11 @@ ISCC.exe /DAppVersion=1.1.1 installer/Yeli.iss
 最终产物为版本化安装器、release.json 和 SHA256SUMS.txt；不会上传个人数据，也不会自动发布 GitHub Release。安装器尚未配置代码签名。
 
 安装和卸载向导固定为简体中文，程序、快捷方式、托盘及安装程序使用夜璃头像图标。
+
+## 没有声音时的检查
+
+声音页先点「测试扬声器（提示音）」，这一步不联网。若仍听不到，检查 Windows 设置里的音频输出设备，以及音量合成器中夜璃是否被静音。再试听在线女声，页面会显示生成、原生播放、连接超时、HTTP 拒绝或无音频等阶段。音频通过 Windows 桌面端 Qt Multimedia 播放，避免依赖网页播放器。
+
+四个在线音色来自同一个微软服务。该服务不能保证中国大陆每条网络线路均可访问；换音色不等于换服务商。若提示 HTTP 403 或连接超时，需要进一步检查服务连接，或另行接入国内语音服务。程序不会自动发送内容至其他服务商。
+
+英雄联盟请在游戏内 Esc → 视频 → 窗口模式选择「无边框」，再开启夜璃游戏模式。当前普通桌面悬浮窗不能保证覆盖独占全屏；程序只使用系统窗口置顶，不介入游戏渲染。Windows 下的实际音频与游戏显示效果仍需在用户电脑验证。

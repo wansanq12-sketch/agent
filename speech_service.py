@@ -53,7 +53,19 @@ def synthesize(text, settings, preview=None):
         raise ValueError('缺少自然语音组件，请更新软件或安装 edge-tts') from None
     except ValueError:
         raise
-    except Exception:
-        raise ValueError('自然语音服务暂时不可用，请检查网络后重试') from None
+    except Exception as exc:
+        name = type(exc).__name__
+        status = getattr(exc, 'status', None)
+        if status in (401, 403):
+            message = '微软语音服务拒绝连接（HTTP '+str(status)+'），可能是接口或访问限制；不能保证中国网络可用'
+        elif isinstance(exc, (asyncio.TimeoutError, TimeoutError)):
+            message = '连接微软语音超时，请检查网络；此在线服务不能保证中国网络可用'
+        elif 'Certificate' in name or 'SSL' in name:
+            message = '语音服务证书验证失败，请检查 Windows 时间和网络证书'
+        elif name == 'NoAudioReceived':
+            message = '微软语音服务没有返回音频，请更换声音重试或稍后再试'
+        else:
+            message = '语音连接失败（'+name+'），请检查网络；此在线服务不能保证中国网络可用'
+        raise ValueError(message) from None
     finally:
         _BUSY.release()

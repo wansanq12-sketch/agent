@@ -15,6 +15,7 @@ from PySide6.QtWebChannel import QWebChannel
 from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile, QWebEngineScript, QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtTextToSpeech import QTextToSpeech
+from windows_audio import AudioPlayback
 
 ROOT = Path(__file__).resolve().parent
 DATA = Path(os.environ.get('COMPANION_DATA_DIR', str(ROOT / 'data')))
@@ -54,13 +55,14 @@ class PetWindow(QWidget):
         source=QFile(':/qtwebchannel/qwebchannel.js');source.open(QIODevice.OpenModeFlag.ReadOnly)
         channel_js=bytes(source.readAll()).decode();source.close()
         script=QWebEngineScript();script.setName('yeli-desktop');script.setInjectionPoint(QWebEngineScript.InjectionPoint.DocumentCreation);script.setWorldId(QWebEngineScript.ScriptWorldId.MainWorld)
-        script.setSourceCode("""window.__nativeQueue=[];window.webkit={messageHandlers:{desktop:{postMessage:function(v){if(window.__desktop)window.__desktop.postMessage(JSON.stringify(v));else window.__nativeQueue.push(v)}}}};
-"""+channel_js+"""\nnew QWebChannel(qt.webChannelTransport,function(c){window.__desktop=c.objects.desktop;for(const v of window.__nativeQueue)window.__desktop.postMessage(JSON.stringify(v));window.__nativeQueue=[];});""")
+        script.setSourceCode("""window.__yeliNativeAudio=true;window.__nativeQueue=[];window.webkit={messageHandlers:{desktop:{postMessage:function(v){if(window.__desktop)window.__desktop.postMessage(JSON.stringify(v));else window.__nativeQueue.push(v)}}}};
+"""+channel_js+"""\nnew QWebChannel(qt.webChannelTransport,function(c){window.__desktop=c.objects.desktop;for(const v of window.__nativeQueue)window.__desktop.postMessage(JSON.stringify(v));window.__yeliNativeAudio=true;window.__nativeQueue=[];});""")
         self.page.scripts().insert(script)
         self.fall=QTimer(self);self.fall.setInterval(16);self.fall.timeout.connect(self.fall_tick)
         self.poll=QTimer(self);self.poll.setInterval(500);self.poll.timeout.connect(self.poll_events);self.poll.start()
         self.hit_timer=QTimer(self);self.hit_timer.setInterval(30);self.hit_timer.timeout.connect(self.update_passthrough);self.hit_timer.start()
         self.passthrough=None
+        self.audio=AudioPlayback(self,self.audio_status)
         self.tts=QTextToSpeech(self);self.was_speaking=False
         self.tts.stateChanged.connect(self.speech_state)
         self.tts.errorOccurred.connect(lambda *args:self.js('voiceStatus(false,'+json.dumps('系统语音不可用，请检查 Windows 中文语音包')+')'))
@@ -74,6 +76,18 @@ class PetWindow(QWidget):
         QApplication.instance().screenAdded.connect(lambda _:self.recover());QApplication.instance().screenRemoved.connect(lambda _:QTimer.singleShot(100,self.recover))
     def open_settings(self):
         self.reveal();self.js("openPanel('settings')")
+    def audio_status(self,sequence,message,done):
+        self.js('nativeVoiceStatus('+json.dumps(sequence)+','+json.dumps(message)+','+json.dumps(done)+')')
+    def keep_on_top(self):
+        if not self.isVisible() or self.isMinimized():return
+        user=ctypes.WinDLL('user32',use_last_error=True)
+        user.SetWindowPos.argtypes=[wintypes.HWND,wintypes.HWND,ctypes.c_int,ctypes.c_int,ctypes.c_int,ctypes.c_int,wintypes.UINT]
+        user.SetWindowPos.restype=wintypes.BOOL
+        # Never activate the pet or steal keyboard focus from the game.
+        ok=user.SetWindowPos(int(self.winId()),wintypes.HWND(-1),0,0,0,0,0x0013)
+        if not ok and not getattr(self,'topmost_failed',False):
+            self.topmost_failed=True
+            self.js("window.yeliOverlayError='Windows 置顶失败，请在无边框模式下重试';if(typeof showOverlayStatus==='function')showOverlayStatus(window.yeliOverlayError)")
     def chinese_voice(self):
         locale=next((v for v in self.tts.availableLocales() if v.name().lower().startswith('zh')),None)
         if locale is None:return False
@@ -108,13 +122,15 @@ class PetWindow(QWidget):
         self.fall.stop();self.peek=None;area=self.screen_area();self.dock='';self.move(max(area.left(),min(self.x(),area.right()-self.width())),self.bottom());self.show();self.raise_();self.js("setDock('')");self.save()
     def handle(self, d):
         action=d.get('action')
-        if action=='speak':
+        if action in ('playAudio','testAudio'):
+            self.audio.play(d.get('audio',''),float(d.get('volume',80)),int(d.get('sequence',0)),tone=action=='testAudio')
+        elif action=='speak':
             self.was_speaking=False;self.tts.stop()
             if not self.chinese_voice():self.js("voiceStatus(false,'没有可用的系统声音，请安装 Windows 中文语音包')");return
             self.tts.setRate(max(-.4,min(.6,(float(d.get('rate',100))-100)/100)))
             self.tts.setVolume(max(0,min(1,float(d.get('volume',80))/100)))
             self.tts.say(str(d.get('text',''))[:12000])
-        elif action=='stopSpeech':self.was_speaking=False;self.tts.stop()
+        elif action=='stopSpeech':self.was_speaking=False;self.tts.stop();self.audio.stop()
         elif action=='hide':self.hide()
         elif action=='regions':
             self.composer_visible=bool(d.get('composer'));self.menu_visible=bool(d.get('menu'))
@@ -134,7 +150,9 @@ class PetWindow(QWidget):
         elif action=='reveal':self.reveal()
         elif action=='peek' and self.dock and self.peek is None:self.peek=self.pos();self.move(self.x()+(35 if self.dock=='left' else -35),self.y())
         elif action=='endPeek' and self.peek is not None:self.move(self.peek);self.peek=None
-        elif action=='gameMode':self.game_mode=bool(d.get('enabled'));self.raise_()
+        elif action=='gameMode':
+            self.game_mode=bool(d.get('enabled'))
+            if self.game_mode:self.reveal();self.keep_on_top()
         elif action=='quit':QApplication.quit()
         elif action=='export':
             filename,_=QFileDialog.getSaveFileName(self,'保存备份','夜璃备份.json','JSON (*.json)')
@@ -145,10 +163,7 @@ class PetWindow(QWidget):
     def poll_events(self):
         request=DATA/'show-request'
         if request.exists():request.unlink(missing_ok=True);self.reveal()
-        if self.game_mode:
-            # HWND_TOPMOST, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE
-            user32=ctypes.WinDLL('user32',use_last_error=True);user32.SetWindowPos.argtypes=[wintypes.HWND,wintypes.HWND,ctypes.c_int,ctypes.c_int,ctypes.c_int,ctypes.c_int,wintypes.UINT]
-            user32.SetWindowPos(int(self.winId()),-1,0,0,0,0,0x0013)
+        if self.game_mode:self.keep_on_top()
     def contains_interactive(self, point):
         x,y=point.x(),point.y()
         for r in self.rects:

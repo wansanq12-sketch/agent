@@ -197,7 +197,7 @@ if(tab==='runtime'||tab==='wellbeing'||tab==='voice'){
    choose.onclick=()=>{fields.voice_choice.value=voice;for(const button of list.querySelectorAll('.voice-choose'))button.textContent='选择';choose.textContent='已选'};choose.className='voice-choose';if(fields.voice_choice.value===voice)choose.textContent='已选';row.append(title,test,choose);list.append(row);
   }
   const stop=el('button','停止试听');stop.onclick=()=>stopVoice();const status=el('small');status.id='voice-status';status.setAttribute('role','status');status.textContent=voiceStatusText;
-  panel.append(list,stop,status,el('small','在线朗读会将文字发送至微软，音频不保存到磁盘，无需语音 API 密钥。游戏模式只播放声音。关闭自然女声可使用系统中文声音。服务不可用时不会自动换声音。'));
+  const outputTest=el('button','测试扬声器（提示音）');outputTest.onclick=()=>testVoiceOutput(Number(fields.voice_volume.value));panel.append(status,list,stop,outputTest,el('small','微软在线语音不能保证中国网络可用。在线朗读会将文字发送至微软，音频不保存到磁盘，无需语音 API 密钥。游戏模式只播放声音。关闭自然女声可使用系统中文声音。服务不可用时不会自动换声音。'));
  }
  if(tab==='wellbeing'){
   panel.append(el('small','提醒沿用安静时段，睡眠与电脑重启不会清除计时。游戏模式开启后改用语音提醒；正在聊天或操作时会延后，两类提醒至少相隔 5 分钟。'));

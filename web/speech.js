@@ -1,16 +1,20 @@
 let voiceSpeaking=false,voiceStatusText='推荐温柔自然女声 · 晓晓',voiceSequence=0,voiceAudio=null;
 function voiceStatus(available,message){voiceStatusText=message||(available?'声音已就绪':'系统语音不可用');const label=document.querySelector('#voice-status');if(label)label.textContent=voiceStatusText;if(!available)voiceFinished()}
+function nativeVoiceStatus(sequence,message,done){if(sequence!==voiceSequence)return;voiceStatus(true,message);if(done)voiceFinished()}
+function testVoiceOutput(volume=80){stopVoice(false);const sequence=++voiceSequence;if(window.__yeliNativeAudio){voiceSpeaking=true;voiceStatus(true,'正在测试 Windows 输出设备…');native('testAudio',{volume,sequence})}else voiceStatus(false,'请在 Windows 桌面版测试扬声器')}
 function voiceFinished(){voiceSpeaking=false;if(typeof finishSpeechMotion==='function')finishSpeechMotion(typeof replyEmotion==='undefined'?'idle':replyEmotion)}
 function stopVoice(finish=true){voiceSequence++;if(voiceAudio){voiceAudio.pause();voiceAudio.removeAttribute('src');voiceAudio.load();voiceAudio=null}voiceSpeaking=false;if(window.webkit?.messageHandlers?.desktop)native('stopSpeech');else window.speechSynthesis?.cancel();if(finish)voiceFinished()}
 function playVoice(text,force=false,previewSettings=null){
  if(!text)return false;
  stopVoice(false);const sequence=++voiceSequence,settings=previewSettings||(typeof state==='undefined'?{}:state?.settings||{});voiceSpeaking=true;
  const rate=settings.voice_rate??100,volume=settings.voice_volume??80;
+ if(volume<=0){voiceStatus(false,'当前语音音量为 0，请调高音量后重试');return false}
  if(settings.voice_neural!==false){
   if(!settings.voice_online_consent){voiceStatus(false,'请在声音设置中勾选微软在线语音授权，保存后试听');return false}
   voiceStatus(true,'正在生成所选声音…');
   api('speech',settings.preview?{preview:true,consent:settings.voice_online_consent,voice:settings.voice_choice,rate,}:{text:String(text)}).then(result=>{
    if(sequence!==voiceSequence)return;
+   if(window.__yeliNativeAudio){voiceStatus(true,'语音已生成，正在交给 Windows 播放…');native('playAudio',{audio:result.audio,volume,sequence});return}
    const audio=new Audio('data:'+result.mime+';base64,'+result.audio);voiceAudio=audio;audio.volume=volume/100;
    audio.onended=()=>{if(sequence===voiceSequence){voiceAudio=null;voiceStatus(true,'播放完成，可试听其他声音');voiceFinished()}};
    audio.onerror=()=>{if(sequence===voiceSequence)voiceStatus(false,'音频播放失败，请检查声音输出设备')};

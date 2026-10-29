@@ -1,4 +1,5 @@
 let watchLatestId=null,watchPolling=false;
+function showOverlayStatus(message){const label=document.querySelector('#overlay-status');if(label)label.textContent=message}
 async function pollGameWatch(){
  if(watchPolling)return;watchPolling=true;
  try{const status=await api('game-watch');
@@ -9,7 +10,9 @@ async function pollGameWatch(){
 setInterval(pollGameWatch,3000);
 async function renderGameWatch(panel,error){
  const initial=await api('game-watch');
- const gameToggle=el('input');gameToggle.type='checkbox';gameToggle.checked=!!state.settings.game_mode;gameToggle.onchange=async()=>{try{await toggleGameMode()}finally{gameToggle.checked=!!state.settings.game_mode}};panel.append(el('label','游戏模式：窗口置顶，语音回复，不显示气泡'),gameToggle);
+ panel.append(el('small','英雄联盟请在 Esc → 视频中选择「无边框」，再开启游戏模式。普通悬浮窗不保证覆盖独占全屏。'));
+ const overlay=el('small',window.yeliOverlayError||'');overlay.id='overlay-status';overlay.setAttribute('role','status');panel.append(overlay);
+ const gameToggle=el('input');gameToggle.type='checkbox';gameToggle.checked=!!state.settings.game_mode;gameToggle.onchange=async()=>{try{await toggleGameMode()}finally{gameToggle.checked=!!state.settings.game_mode}};panel.append(el('label','游戏模式：无边框窗口下置顶，语音回复，不显示气泡'),gameToggle);
  panel.append(el('small','Windows 游戏陪玩：开启后等待指定游戏进入前台，本地识别决策界面；只有触发建议时才发送游戏画面、识别文字和所选技能给你配置的 AI。切换到其他软件或最小化游戏会暂停采集。请使用支持图片输入的模型；画面不写入磁盘。'));
  const label=el('small');label.id='watch-status';label.style.whiteSpace='pre-wrap';label.textContent=initial.status+(initial.error?'\n'+initial.error:'');panel.append(label);
  if(!initial.supported)panel.append(el('small','当前电脑不是 Windows。可以先配置和导入技能，屏幕观察需要在 Windows 运行。'));

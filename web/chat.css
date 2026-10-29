@@ -92,3 +92,5 @@
 #panel{scrollbar-width:none;-ms-overflow-style:none}
 #panel::-webkit-scrollbar,#panel *::-webkit-scrollbar{display:none;width:0;height:0}
 #panel *{scrollbar-width:none}
+
+#panel #voice-status{position:sticky;top:45px;z-index:5;background:#fff4ec;color:#68472e;border-radius:10px;padding:10px;display:block;margin:10px 0}
