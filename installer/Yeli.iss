@@ -19,31 +19,34 @@ UsePreviousAppDir=yes
 DisableProgramGroupPage=yes
 CloseApplications=yes
 RestartApplications=no
-UninstallDisplayIcon={app}\Yeli.exe
+UninstallDisplayIcon={app}\Yeli.ico
 OutputDir=..\dist
 OutputBaseFilename=Yeli-Setup-{#AppVersion}-x64
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 SetupLogging=yes
+SetupIconFile=..\assets\icons\yeli.ico
+ShowLanguageDialog=no
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "chinesesimplified"; MessagesFile: "languages\ChineseSimplified.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
+Name: "desktopicon"; Description: "创建桌面快捷方式"; Flags: unchecked
 
 [Files]
+Source: "..\assets\icons\yeli.ico"; DestDir: "{app}"; DestName: "Yeli.ico"; Flags: ignoreversion
 Source: "..\dist\Yeli.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README-EXE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\skills\hex-aram\*"; DestDir: "{app}\skills\hex-aram"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\夜璃"; Filename: "{app}\Yeli.exe"
-Name: "{autodesktop}\夜璃"; Filename: "{app}\Yeli.exe"; Tasks: desktopicon
+Name: "{group}\夜璃"; Filename: "{app}\Yeli.exe"; IconFilename: "{app}\Yeli.ico"
+Name: "{autodesktop}\夜璃"; Filename: "{app}\Yeli.exe"; Tasks: desktopicon; IconFilename: "{app}\Yeli.ico"
 
 [Run]
-Filename: "{app}\Yeli.exe"; Description: "Launch Yeli"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Yeli.exe"; Description: "启动夜璃"; Flags: nowait postinstall skipifsilent
 
 ; User data is NEVER installed, overwritten, or removed by this installer.
 ; Stable location: %LOCALAPPDATA%\Yeli\data (shared with older EXE releases).

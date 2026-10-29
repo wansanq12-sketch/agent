@@ -31,7 +31,7 @@ def self_test(output):
         from rapidocr_onnxruntime import RapidOCR
         engine=RapidOCR();engine(np.zeros((64,128,3),dtype=np.uint8))
         report['ocr']='native inference passed'
-        for name in ['web/index.html','web/sprites.js','web/game-watch.js','assets/yeli-reference-v1.png','skills/hex-aram/SKILL.md']:
+        for name in ['web/index.html','web/sprites.js','web/game-watch.js','assets/yeli-reference-v1.png','skills/hex-aram/SKILL.md','assets/icons/yeli.ico','assets/icons/yeli.png']:
             if not (ROOT/name).is_file():raise RuntimeError('Missing bundled resource: '+name)
         manifest=json.loads((ROOT/'assets/actions/manifest.json').read_text(encoding='utf-8'))
         for action in manifest['actions'].values():

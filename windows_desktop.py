@@ -38,6 +38,7 @@ class Bridge(QObject):
 class PetWindow(QWidget):
     def __init__(self, url):
         super().__init__()
+        self.setWindowIcon(QIcon(str(ROOT/'assets/icons/yeli.ico')))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool | Qt.WindowType.WindowStaysOnTopHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
@@ -67,8 +68,8 @@ class PetWindow(QWidget):
         self.restore()
         self.page.loadFinished.connect(lambda ok:self.js('setDock('+json.dumps(self.dock)+');regions()') if ok else None)
         self.view.load(QUrl(url))
-        icon=QPixmap(32,32);icon.fill(Qt.GlobalColor.transparent);p=QPainter(icon);p.setPen(QColor('#bedbff'));p.setFont(self.font());p.drawText(icon.rect(),Qt.AlignmentFlag.AlignCenter,'☾');p.end()
-        self.tray=QSystemTrayIcon(QIcon(icon),self);self.tray.setToolTip('夜璃')
+        icon=QIcon(str(ROOT/'assets/icons/yeli.ico'))
+        self.tray=QSystemTrayIcon(icon,self);self.tray.setToolTip('夜璃')
         menu=QMenu();menu.addAction('显示 / 隐藏',lambda:self.hide() if self.isVisible() else self.reveal());menu.addAction('设置',self.open_settings);menu.addAction('游戏置顶模式',lambda:self.js('void toggleGameMode()'));menu.addAction('退出',lambda:self.js('void quitPet()'));self.tray.setContextMenu(menu);self.tray.activated.connect(lambda reason:self.reveal() if reason==QSystemTrayIcon.ActivationReason.Trigger else None);self.tray.show()
         QApplication.instance().screenAdded.connect(lambda _:self.recover());QApplication.instance().screenRemoved.connect(lambda _:QTimer.singleShot(100,self.recover))
     def open_settings(self):
@@ -180,7 +181,7 @@ def run(url):
     if sys.platform!='win32':raise SystemExit('此桌面入口仅供 Windows 使用')
     parsed=urlsplit(url)
     if parsed.scheme!='http' or parsed.hostname!='127.0.0.1':raise SystemExit('仅允许本机服务')
-    app=QApplication(sys.argv);app.setQuitOnLastWindowClosed(False);window=PetWindow(url);window.show();return app.exec()
+    app=QApplication(sys.argv);app.setWindowIcon(QIcon(str(ROOT/'assets/icons/yeli.ico')));app.setQuitOnLastWindowClosed(False);window=PetWindow(url);window.show();return app.exec()
 
 if __name__=='__main__':
     sys.exit(run(sys.argv[1]))

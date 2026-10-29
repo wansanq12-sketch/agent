@@ -51,6 +51,8 @@ try {
     Assert-DataPreserved
     if ((Get-ItemProperty $registryPath).DisplayVersion -ne $version) { throw 'Upgrade did not register the new version' }
     if (-not (Test-Path (Join-Path $env:APPDATA 'Microsoft/Windows/Start Menu/Programs/夜璃/夜璃.lnk'))) { throw 'Start Menu shortcut missing' }
+    $installedIcon = Join-Path $installDir 'Yeli.ico'
+    if (-not (Test-Path $installedIcon) -or (Get-FileHash $installedIcon).Hash -ne (Get-FileHash assets/icons/yeli.ico).Hash) { throw 'Installed character icon missing or mismatched' }
     $installedExe = Join-Path $installDir 'Yeli.exe'
     if ((Get-FileHash $installedExe).Hash -ne (Get-FileHash dist/Yeli.exe).Hash) { throw 'Installed executable differs from built executable' }
     $selfTest = Join-Path $root 'dist/installed-self-test.json'
